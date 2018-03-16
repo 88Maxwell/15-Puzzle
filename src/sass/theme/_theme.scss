@@ -1,0 +1,27 @@
+/*-----------------THEME-------------------------*/
+@import "variables";
+.l- {
+    &wrapper {
+        background-color: $main;    
+    }
+    &nav {
+        list-style-type: none;
+        & > li {
+            background-color: $main / 2;
+            & > a {
+                color: white;
+                text-decoration: none;            
+            }
+            &:hover {
+                background-color: $main / 3;
+            }
+        }
+    }
+    
+    &container-wrapper {
+        background-color: #fff;
+    }
+}
+.item {
+    background-color: $main/2;    
+}
