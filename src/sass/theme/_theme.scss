@@ -9,7 +9,7 @@
         & > li {
             background-color: $main / 2;
             & > a {
-                color: white;
+                color: $second;
                 text-decoration: none;            
             }
             &:hover {
@@ -19,9 +19,15 @@
     }
     
     &container-wrapper {
-        background-color: #fff;
+        background-color: $second;
     }
 }
 .item {
     background-color: $main/2;    
+}
+
+.l-square {
+    box-sizing: border-box;
+    background-color: $second;
+    border: 8px double $main;
 }

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: [
-        "./src/js/index.js", 
+        "./src/js", 
         "webpack/hot/dev-server",
         "webpack-dev-server/client?http://localhost:8080/"
     ],
@@ -17,7 +17,7 @@ module.exports = {
   
     module: {
         loaders: [{
-            test: /\.jsx?$/,
+            test: /\.(js|jsx)$/,
             exclude: /node_modules/,
             loaders: [
                 'babel?presets[]=react,presets[]=es2015'
