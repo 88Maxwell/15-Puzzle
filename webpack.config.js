@@ -1,55 +1,63 @@
-const path = require("path");
-const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin'); 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
-    entry: [
-        "./src/js", 
-        "webpack/hot/dev-server",
-        "webpack-dev-server/client?http://localhost:8080/"
-    ],
-  
+const paths = {
+    ROOT: path.resolve(__dirname, ""),
+    DIST: path.resolve(__dirname, 'dist'),
+    SRC: path.resolve(__dirname, 'src'),
+    JS: path.resolve(__dirname, 'src/js')
+}
+
+const config = {
+    entry: path.join(paths.JS, 'index.js'),
+
     output: {
-        publicPath: 'http://localhost:8080/',
-        filename: "build/bundle.js"
+        path: paths.DIST,
+        filename: 'index.bundle.js'
     },
 
-    devtool: 'source-map',
-  
-    module: {
-        loaders: [{
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            loaders: [
-                'babel?presets[]=react,presets[]=es2015'
-            ]
-        },
+    devtool: "cheap-module-source-map",
 
-        {
-            test: /\.scss$/,
-            include: /src/,
-            loaders: [
-                'style',
-                'css',
-                'sass'
-            ]
-        },
-        
-        {
-            test: /\.(jpe?g|png|gif|svg)$/i,
-            loaders: [
-                'url',
-                'img'
-            ]
-        }
+    devServer: {
+        contentBase: paths.SRC,
+        stats: 'errors-only',
+        // compress: true,
+        port: 9000
+    },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.join(paths.ROOT, 'index.html'),
+        }),
+        new ExtractTextPlugin('style.bundle.css')
+    ],
+    
+    module: {
+        rules: [
+            //JS/JSX LOADER
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: [
+                'babel-loader',
+                ],
+            },
+            //SASS/CSS LOADER
+            {
+                test: /\.(scss|sass)$/,
+                loader: ExtractTextPlugin.extract({
+                    use: ['css-loader', 'sass-loader']
+                }),
+            }
 
         ]
-
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ],
-    devServer: {
-        stats: 'errors-only',
-    }
-  };
-  
+
+    resolve: {
+        extensions: ['.js', '.jsx'],
+      },
+    
+}
+
+module.exports = config;

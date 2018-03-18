@@ -1,6 +1,7 @@
 import React from 'react';
 
-class Buttons extends React.Component {
+export default class Buttons extends React.Component {
+
     refresh(){
         alert("refresh That");
     }
@@ -13,8 +14,6 @@ class Buttons extends React.Component {
                 <li><a onClick={this.refresh}>{refreshButton}</a></li>
                 <li><a onClick={this.other}>{otherButton}</a></li>
             </nav>
-            );
+        );
     }
 }
-
-export default Buttons;

@@ -1,6 +1,8 @@
 import React from 'react';
+import Buttons from './buttons';
+import Item from './item';
 
-class Container extends React.Component {
+export default class Container extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,13 +16,13 @@ class Container extends React.Component {
                 x: index % countInRow,
                 y: Math.floor(index / countInRow),
                 state: false
-            }
+            };
         });
         coords[15].state = true;
         return { 
             countInRow: countInRow,
             coords: coords
-        }
+        };
     }
 
     renderItems(){
@@ -44,5 +46,3 @@ class Container extends React.Component {
         ];
     }
 }
-
-export default Container;

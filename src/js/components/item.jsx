@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Item extends React.Component {
+export default class Item extends React.Component {
     render(){
         if (this.props.square) {
             return (
@@ -17,4 +17,3 @@ class Item extends React.Component {
         }
     }
 }
-export default Item;
