@@ -28,7 +28,8 @@ const config = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(paths.ROOT, 'index.html'),
+            filename: path.join(paths.ROOT, 'index.html'),
+            template: path.join(paths.SRC, 'index.html'),
         }),
         new ExtractTextPlugin('style.bundle.css')
     ],
