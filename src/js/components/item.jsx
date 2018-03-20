@@ -2,16 +2,16 @@ import React from 'react';
 
 export default class Item extends React.Component {
     render(){
-        if (this.props.square) {
+        if (this.props.main) {
             return (
-                <div className="item-wrapper" key={this.props.number}>
-                    <div className="item l-square" key={this.props.key}></div>
+                <div key={this.key} className={"item-wrapper " + this.props.right}>
+                    <div key={"item" + this.key} className="item l-square"></div>
                 </div>
             );
-        } else {
+        }else {
             return (
-                <div className="item-wrapper" key={this.props.number}>
-                    <div className="item" key={this.props.key}>{this.props.children}</div>
+                <div key={this.key} className={"item-wrapper " + this.props.right}>
+                    <div key={"item" + this.key} className="item">{this.props.children}</div>
                 </div>
             );   
         }

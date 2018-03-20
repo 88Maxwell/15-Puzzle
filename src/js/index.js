@@ -4,8 +4,6 @@ import React from 'react';
 import { render } from 'react-dom';
 
 
-import Container from './components/container';
-import ErrorBoundary from './components/errorBoundary';
+import Game from './components/container';
 
-
-render( <ErrorBoundary><Container /></ErrorBoundary> , document.getElementsByClassName("l-wrapper")[0]);
+render(<Game />, document.getElementsByClassName("l-wrapper")[0]);
