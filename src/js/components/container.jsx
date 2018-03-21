@@ -19,6 +19,7 @@ export default class Game extends React.Component {
 
         this.shufleGame = this.shufleGame.bind(this);
         this.initGame = this.initGame.bind(this);
+        this.changeGameState = this.changeGameState.bind(this);
     }
 
     // ---------------------------------------
@@ -34,12 +35,23 @@ export default class Game extends React.Component {
         });
     }
 
-    startGame(){
+    startGame(ev){
+        this.refs.container.focus();
         this.stateSetter(true, this.shufleGame);
     }
 
-    breakGame(){
+    breakGame(ev){
         this.stateSetter(false, this.initGame);
+    }
+
+    changeGameState(ev){
+        if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
+            let gs = this.swapItems(ev.keyCode)
+            return {
+                gameState: gs,
+                wrongItems: this.getWrongItems(gs)                
+            }
+        }
     }
 
     winGame(){
@@ -68,6 +80,37 @@ export default class Game extends React.Component {
         };
     }
 
+    swapItems(key){
+        try{
+            switch (key) {
+                //---- LEFT -------
+                case 37:
+                let gs = this.swapHandler(-1, 0);
+                console.log(gs);
+                
+                return {
+                    gameState: gs,
+                    wrongItems: this.getWrongItems(gs)            
+                }     
+
+                //---- TOP --------
+                case 38:
+                    
+                    break;
+
+                //---- RIGHT ------
+                case "39":
+                    
+                    break;
+
+                //---- DOWN -------
+                case "40":
+                    
+                    break;
+            }   
+        } catch (error) {console.log(error);}
+    }
+
     
 
     // ---------------------------------------
@@ -87,13 +130,34 @@ export default class Game extends React.Component {
     }
     
     getWrongItems(gameState){
-        let wrongs = []
+        let wrongs = [];
         gameState.forEach((val, index) => {
             if (val.x + val.y * 4 + 1 != index+1){
                 wrongs.push(index);
             }
         });
         return wrongs;
+    }
+
+    swapHandler(a, b) {
+        let gs = this.state.gameState;
+        let main = gs.find(item => item.main);
+        let item = gs.find(item => (item.x == main.x + a) && (item.y == main.y + b));
+        console.log(item);
+        console.log(main);
+        
+        return this.swapArrayElem(gs, gs.indexOf(main), gs.indexOf(main));
+      };
+
+    swapArrayElem(arr, a, b ){
+        arr = arr.slice();
+        let c = arr[a];
+        arr[a] = arr[b];
+        arr[b] = c;
+        // arr.splice(b, 1, arr.splice(a, 1, arr[b])[0]);
+        // console.log(arr);
+        
+        return arr;
     }
 
     // ---------------------------------------
@@ -131,7 +195,12 @@ export default class Game extends React.Component {
                 winGame={this.winGame}
             />,
             <div className="l-container-wrapper">
-                <div className="l-container">
+                <div
+                    ref="container"
+                    onKeyDown={this.changeGameState}
+                    tabIndex="0"
+                    className="l-container"
+                >
                     {this.renderItems()}                        
                 </div>            
             </div>
