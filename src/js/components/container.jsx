@@ -11,8 +11,14 @@ export default class Game extends React.Component {
             enabled: false,
             wrongItems: this.initGame().wrongItems,
             gameState: this.initGame().gameState
-            
         };
+
+        this.startGame = this.startGame.bind(this);
+        this.breakGame = this.breakGame.bind(this);
+        this.winGame = this.winGame.bind(this);
+
+        this.shufleGame = this.shufleGame.bind(this);
+        this.initGame = this.initGame.bind(this);
     }
 
     // ---------------------------------------
@@ -20,13 +26,32 @@ export default class Game extends React.Component {
     // ---------------------------------------
 
     stateSetter(enabled, gameStateCallback){
+        let gsc = gameStateCallback();
         this.setState({
             enabled: enabled,
-            wrongItems: gameStateCallback().wrongItems || this.state.wrondItem,
-            gameState: gameStateCallback().gameState || this.state.gameState
+            wrongItems: gsc.wrongItems || this.state.wrongItem,
+            gameState: gsc.gameState || this.state.gameState
         });
     }
 
+    startGame(){
+        this.stateSetter(true, this.shufleGame);
+    }
+
+    breakGame(){
+        this.stateSetter(false, this.initGame);
+    }
+
+    winGame(){
+        alert("Victory");
+        this.stateSetter(false);
+    }
+
+    // ---------------------------------------
+    // ------------STATES HANDLERS
+    // ---------------------------------------
+
+    
     initGame(){
         return {
             gameState: this.defaultGameState(),
@@ -39,9 +64,11 @@ export default class Game extends React.Component {
         let gs = this.state.gameState.sort(() => 0.5 - Math.random());
         return {
             gameState: gs,
-            wrondItem: getwrongItems(gs)
+            wrongItems: this.getWrongItems(gs)
         };
     }
+
+    
 
     // ---------------------------------------
     // ----------------SOME TOOLS
@@ -59,12 +86,14 @@ export default class Game extends React.Component {
         return gameState;
     }
     
-    getwrongItems(gs){
-        return gs.forEach((val, index) => {
-            if (val.x*4 + val.y + 1 == index){
-                return index;
+    getWrongItems(gameState){
+        let wrongs = []
+        gameState.forEach((val, index) => {
+            if (val.x + val.y * 4 + 1 != index+1){
+                wrongs.push(index);
             }
         });
+        return wrongs;
     }
 
     // ---------------------------------------
@@ -76,25 +105,20 @@ export default class Game extends React.Component {
         return this.state.gameState.map((val, index) => {
             let right = !this.state.wrongItems.includes(index);
             let main = val.main;
-
-            //-------- RIGHT MAIN BLOCK------
-            if (right && main) {
-                return <Item key={index.toString()} main={main} right="right" />;
-
-
-            //---------------- RIGHT ITEM BLOCK------
-            } else if (right && !main) {
-                return <Item key={index.toString()} main={main} right="right" >{index + 1}</Item>
-
-            //-------- NOT RIGHT MAIN BLOCK------
-            } else if (!right && main) {
-                return <Item key={index.toString()} />;
+            let number;
             
+            number = !main ? val.x + val.y * 4 + 1 : "";
+            right = right ? "right" : "";
             
-            //---------------- NOT RIGHT ITEM BLOCK------
-            } else if (!right && !main) {
-                return <Item key={index.toString()}>{index + 1}</Item>
-            }
+            return (
+                <Item 
+                    key={index.toString()}
+                    main={main} 
+                    right={right} 
+                >
+                    {number}
+                </Item>
+                );
         });
     }
  
@@ -102,11 +126,10 @@ export default class Game extends React.Component {
         return [
             <h1 className="l-title">15-puzzle</h1>,
             <Navigation
-                initGame={this.initGame}
-                shufleGame={this.shufleGame}
                 startGame={this.startGame}
                 breakGame={this.breakGame}
-                stateSetter={this.stateSetter} />,
+                winGame={this.winGame}
+            />,
             <div className="l-container-wrapper">
                 <div className="l-container">
                     {this.renderItems()}                        

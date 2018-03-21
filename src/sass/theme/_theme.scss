@@ -2,38 +2,45 @@
 @import "variables";
 .l- {
     &wrapper {
-        background-color: $main;    
+        background-color: $main;
     }
+
     &nav {
         list-style-type: none;
-        & > li {
-            background-color: $main / 2;
-            cursor: pointer;
-            & > a {
-                color: $second;
-                text-decoration: none;            
-            }
-            &:hover {
-                background-color: $main / 3;
-            }
-        }
     }
     
     &container-wrapper {
+        box-sizing: border-box;
         background-color: $second;
+        border: 1px solid $main / 2;
+        box-shadow: 2px 2px 10px $main / 2;
     }
 }
-.item {
-    background-color: $main/2;    
+
+.btn{
+    background-color: $main / 2;
+    cursor: pointer;
+    
+    & > a {
+        color: $second;
+        text-decoration: none;
+    }
+
+    &:hover {
+        background-color: $main / 3;
+    }
 }
 
-.l-square {
-    box-sizing: border-box;
-    background-color: $second;
-    border: 8px double $main;
+.item {
+    background-color: $item;    
 }
 
 .right{
+    background-color: $right;
+}
+
+.l-main-item {
+    background-color: $second;
     box-sizing: border-box;
-    border: 2px solid green;
+    border: 2px solid $main / 2;
 }
