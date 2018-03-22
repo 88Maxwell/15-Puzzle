@@ -3,14 +3,14 @@ import Navigation from './navigation';
 import Item from './item';
 import ErrorBoundary from './errorBoundary';
 
-
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
+        let gameState = this.initGame()
         this.state = {
             enabled: false,
-            wrongItems: this.initGame().wrongItems,
-            gameState: this.initGame().gameState
+            wrongItems: [],
+            gameState: gameState
         };
 
         this.startGame = this.startGame.bind(this);
@@ -26,31 +26,40 @@ export default class Game extends React.Component {
     // ------------WORK WITH STATES
     // ---------------------------------------
 
-    stateSetter(enabled, gameStateCallback){
-        let gsc = gameStateCallback();
+    stateSetter(enabled, gameState){
         this.setState({
             enabled: enabled,
-            wrongItems: gsc.wrongItems || this.state.wrongItem,
-            gameState: gsc.gameState || this.state.gameState
+            wrongItems: this.getWrongItems(gameState) || this.state.wrongItems,
+            gameState: gameState || this.state.gameState
         });
     }
 
+    getWrongItems(gameState){        
+        let wrongs = [];
+        try {
+            gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));                             
+        } catch (error) { wrongs = null}
+        if(wrongs == []) this.winGame();
+        return wrongs; 
+        
+    }
+
+    // ---------------------------------------
+    // ------------EVENTS CALLER
+    // ---------------------------------------
+
     startGame(ev){
         this.refs.container.focus();
-        this.stateSetter(true, this.shufleGame);
+        this.stateSetter(true, this.shufleGame());
     }
 
     breakGame(ev){
-        this.stateSetter(false, this.initGame);
+        this.stateSetter(false, this.initGame());
     }
 
     changeGameState(ev){
         if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
-            let gs = this.swapItems(ev.keyCode)
-            return {
-                gameState: gs,
-                wrongItems: this.getWrongItems(gs)                
-            }
+            this.stateSetter(true, this.swapItems(ev.keyCode));
         }
     }
 
@@ -65,50 +74,40 @@ export default class Game extends React.Component {
 
     
     initGame(){
-        return {
-            gameState: this.defaultGameState(),
-            wrongItems: []
-        };
-        
+        return this.defaultGameState();
     }
 
     shufleGame(){
-        let gs = this.state.gameState.sort(() => 0.5 - Math.random());
-        return {
-            gameState: gs,
-            wrongItems: this.getWrongItems(gs)
-        };
+        return this.shufleFisherYates(this.state.gameState);
     }
 
     swapItems(key){
         try{
+            var gameState;
             switch (key) {
                 //---- LEFT -------
                 case 37:
-                let gs = this.swapHandler(-1, 0);
-                console.log(gs);
-                
-                return {
-                    gameState: gs,
-                    wrongItems: this.getWrongItems(gs)            
-                }     
+                    gameState = this.swapHandler(-1, 0);                    
+                    break;
 
                 //---- TOP --------
                 case 38:
-                    
+                    gameState = this.swapHandler(0, -1);                  
                     break;
 
                 //---- RIGHT ------
-                case "39":
-                    
+                case 39:
+                    gameState = this.swapHandler(1, 0);
                     break;
 
                 //---- DOWN -------
-                case "40":
-                    
+                case 40:
+                    gameState = this.swapHandler(0, 1);                
                     break;
-            }   
-        } catch (error) {console.log(error);}
+            }
+            
+            return gameState;
+        } catch (error) {console.log("error")}
     }
 
     
@@ -118,45 +117,50 @@ export default class Game extends React.Component {
     // ---------------------------------------
 
     defaultGameState(){
-        let gameState = Array.from(new Array(15), (val,index) => {
-            return {
-                    x: index % 4,
-                    y: Math.floor(index / 4),
-                    main: null
-                }
-            });
-        gameState.push({x: 3, y: 3, main: true});
+        let gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({y, x})));   
+        gameState[3][3].main = true;
         return gameState;
     }
     
-    getWrongItems(gameState){
-        let wrongs = [];
-        gameState.forEach((val, index) => {
-            if (val.x + val.y * 4 + 1 != index+1){
-                wrongs.push(index);
+    shufleFisherYates(arr){ 
+        for (let i = arr.length-1 ; i > 0 ; i--) {
+            for (let j = arr.length -1; j > 0 ; j--) {
+                let m = Math.floor(Math.random()*i);
+                let n = Math.floor(Math.random()*j);
+                let temp = arr[i][j];
+                arr[i][j] = arr[m][n];
+                arr[m][n] = temp;
             }
-        });
-        return wrongs;
+        }
+        return arr;
     }
 
     swapHandler(a, b) {
         let gs = this.state.gameState;
-        let main = gs.find(item => item.main);
-        let item = gs.find(item => (item.x == main.x + a) && (item.y == main.y + b));
-        console.log(item);
-        console.log(main);
-        
-        return this.swapArrayElem(gs, gs.indexOf(main), gs.indexOf(main));
-      };
+        let main;
+        gs.forEach((val, y) => 
+            val.forEach((item, x) => {
+                try {
+                    if (item.main) {
+                        main = {y, x};
+                        throw BreakException;
+                    }   
+                } catch (error) {}
+            })
+        );
+        let item = {
+            y: main.y + b, 
+            x: main.x + a
+        };        
+        if (gs[item.y][item.x] != undefined) {
+            return this.swapArrayElem(gs, main, item);            
+        }
+    }
 
     swapArrayElem(arr, a, b ){
-        arr = arr.slice();
-        let c = arr[a];
-        arr[a] = arr[b];
-        arr[b] = c;
-        // arr.splice(b, 1, arr.splice(a, 1, arr[b])[0]);
-        // console.log(arr);
-        
+        let c = arr[a.y][a.x];
+        arr[a.y][a.x] = arr[b.y][b.x];
+        arr[b.y][b.x] = c;
         return arr;
     }
 
@@ -166,23 +170,20 @@ export default class Game extends React.Component {
 
 
     renderItems(){
-        return this.state.gameState.map((val, index) => {
-            let right = !this.state.wrongItems.includes(index);
-            let main = val.main;
-            let number;
-            
-            number = !main ? val.x + val.y * 4 + 1 : "";
-            right = right ? "right" : "";
-            
-            return (
-                <Item 
-                    key={index.toString()}
-                    main={main} 
-                    right={right} 
-                >
-                    {number}
-                </Item>
+        return this.state.gameState.map((val, i) => {
+            return val.map((item, j) => {
+                let number = item.x + item.y * 4 + 1;
+                let right = !this.state.wrongItems.includes(item);
+                return (
+                    <Item 
+                        id={number.toString()}
+                        main={item.main ? "l-main-item" : ""} 
+                        right={right ? "right " : ""} 
+                    >
+                        {!item.main ? number : ""}
+                    </Item>
                 );
+            });
         });
     }
  
@@ -190,12 +191,14 @@ export default class Game extends React.Component {
         return [
             <h1 className="l-title">15-puzzle</h1>,
             <Navigation
+                key="nav"
                 startGame={this.startGame}
                 breakGame={this.breakGame}
                 winGame={this.winGame}
-            />,
+            />,                    
             <div className="l-container-wrapper">
                 <div
+                    key="container"
                     ref="container"
                     onKeyDown={this.changeGameState}
                     tabIndex="0"
