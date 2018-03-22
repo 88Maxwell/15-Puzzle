@@ -4,7 +4,7 @@ export default class Item extends React.Component {
     render(){
         return (
             <div
-                key={"item-" + this.props.id}
+                // key={"item-" + this.props.id}
                 className="item-wrapper"
             >
                 <div 

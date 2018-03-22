@@ -15,7 +15,6 @@ export default class Game extends React.Component {
 
         this.startGame = this.startGame.bind(this);
         this.breakGame = this.breakGame.bind(this);
-        this.winGame = this.winGame.bind(this);
 
         this.shufleGame = this.shufleGame.bind(this);
         this.initGame = this.initGame.bind(this);
@@ -38,8 +37,7 @@ export default class Game extends React.Component {
         let wrongs = [];
         try {
             gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));                             
-        } catch (error) { wrongs = null}
-        if(wrongs == []) this.winGame();
+        } catch (error) {return null;}
         return wrongs; 
         
     }
@@ -50,22 +48,24 @@ export default class Game extends React.Component {
 
     startGame(ev){
         this.refs.container.focus();
-        this.stateSetter(true, this.shufleGame());
+        let gs = this.shufleGame();
+        let wrongs = this.getWrongItems(gs);
+
+        this.stateSetter(true, gs, wrongs);
     }
 
     breakGame(ev){
-        this.stateSetter(false, this.initGame());
+        this.stateSetter(false, this.initGame(), []) ;
     }
 
     changeGameState(ev){
         if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
-            this.stateSetter(true, this.swapItems(ev.keyCode));
-        }
-    }
+            let gs = this.swapItems(ev.keyCode);
+            let wrongs = this.getWrongItems(gs);
+            let enabled = !(wrongs == []) ? true : alert("YOU ARE WIN A GAME!!!"), wrong = false;
 
-    winGame(){
-        alert("Victory");
-        this.stateSetter(false);
+            this.stateSetter(enabled, gs, wrongs);
+        }
     }
 
     // ---------------------------------------
@@ -107,7 +107,7 @@ export default class Game extends React.Component {
             }
             
             return gameState;
-        } catch (error) {console.log("error")}
+        } catch (error) {}
     }
 
     
@@ -138,23 +138,20 @@ export default class Game extends React.Component {
     swapHandler(a, b) {
         let gs = this.state.gameState;
         let main;
-        gs.forEach((val, y) => 
-            val.forEach((item, x) => {
-                try {
-                    if (item.main) {
-                        main = {y, x};
-                        throw BreakException;
-                    }   
-                } catch (error) {}
-            })
-        );
+        gs.forEach((val, y) => val.forEach((item, x) => {
+            try {
+                if (item.main) {
+                    main = {y, x};
+                    throw BreakException;
+                }   
+            } catch (error) {}
+        }));
+
         let item = {
             y: main.y + b, 
             x: main.x + a
         };        
-        if (gs[item.y][item.x] != undefined) {
-            return this.swapArrayElem(gs, main, item);            
-        }
+        if (gs[item.y][item.x] != undefined) return this.swapArrayElem(gs, main, item);
     }
 
     swapArrayElem(arr, a, b ){
@@ -176,7 +173,7 @@ export default class Game extends React.Component {
                 let right = !this.state.wrongItems.includes(item);
                 return (
                     <Item 
-                        id={number.toString()}
+                        key={"item-" + number.toString()}
                         main={item.main ? "l-main-item" : ""} 
                         right={right ? "right " : ""} 
                     >
@@ -189,14 +186,23 @@ export default class Game extends React.Component {
  
     render(){
         return [
-            <h1 className="l-title">15-puzzle</h1>,
+            <h1 
+                key="title"
+                className="l-title"
+            >
+                15-puzzle
+            </h1>,
+
             <Navigation
                 key="nav"
                 startGame={this.startGame}
                 breakGame={this.breakGame}
                 winGame={this.winGame}
             />,                    
-            <div className="l-container-wrapper">
+            <div
+                key="container-wrapper"         
+                className="l-container-wrapper"
+            >
                 <div
                     key="container"
                     ref="container"
