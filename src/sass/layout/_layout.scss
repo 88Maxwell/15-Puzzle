@@ -12,7 +12,6 @@
     
     &title {
         margin: 10px;
-        color: #fff
     }
     
     &nav {
@@ -26,6 +25,7 @@
     
     &container-wrapper {
         position: relative;
+        box-sizing: border-box;
         margin: 15px; 
         width: 50%;
         padding-top: 50%;
@@ -41,4 +41,8 @@
         width: 100%;
         height: 100%;
     }   
+
+    &main-item{
+        box-sizing: border-box;
+    }
 }

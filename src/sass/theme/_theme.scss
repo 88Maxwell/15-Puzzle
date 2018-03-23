@@ -5,12 +5,14 @@
         background-color: $main;
     }
 
+    &title{
+        color: $second;        
+    }
     &nav {
         list-style-type: none;
     }
     
     &container-wrapper {
-        box-sizing: border-box;
         background-color: $second;
         border: 1px solid $main / 2;
         box-shadow: 2px 2px 10px $main / 2;
@@ -41,6 +43,5 @@
 
 .l-main-item {
     background-color: $second;
-    box-sizing: border-box;
     border: 2px solid $main / 2;
 }

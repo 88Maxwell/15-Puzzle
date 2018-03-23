@@ -1,7 +1,6 @@
 import React from 'react';
 import Navigation from './navigation';
 import Item from './item';
-import ErrorBoundary from './errorBoundary';
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -12,7 +11,8 @@ export default class Game extends React.Component {
             wrongItems: [],
             gameState: gameState
         };
-
+    
+    // ----------------BINDING
         this.startGame = this.startGame.bind(this);
         this.breakGame = this.breakGame.bind(this);
 
@@ -25,21 +25,21 @@ export default class Game extends React.Component {
     // ------------WORK WITH STATES
     // ---------------------------------------
 
-    stateSetter(enabled, gameState){
+    stateSetter(enabled, gameState, wrongs){
         this.setState({
             enabled: enabled,
-            wrongItems: this.getWrongItems(gameState) || this.state.wrongItems,
-            gameState: gameState || this.state.gameState
+            gameState: gameState || this.state.gameState,
+            wrongItems: wrongs || this.state.wrongItems
         });
     }
 
     getWrongItems(gameState){        
         let wrongs = [];
         try {
-            gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));                             
-        } catch (error) {return null;}
-        return wrongs; 
-        
+            gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));
+            console.log();
+            return wrongs;         
+        } catch (error) {return null;} // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
     }
 
     // ---------------------------------------
@@ -62,8 +62,14 @@ export default class Game extends React.Component {
         if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
             let gs = this.swapItems(ev.keyCode);
             let wrongs = this.getWrongItems(gs);
-            let enabled = !(wrongs == []) ? true : alert("YOU ARE WIN A GAME!!!"), wrong = false;
+            let enabled = true;
 
+            if(wrongs != null)
+                if (wrongs.length == 0) {
+                    alert("YOU ARE WIN A GAME!!!");
+                    enabled = false;
+                }             
+            
             this.stateSetter(enabled, gs, wrongs);
         }
     }
@@ -82,32 +88,29 @@ export default class Game extends React.Component {
     }
 
     swapItems(key){
-        try{
-            var gameState;
-            switch (key) {
-                //---- LEFT -------
-                case 37:
-                    gameState = this.swapHandler(-1, 0);                    
-                    break;
+        let gameState;
+        switch (key) {
+            //---- LEFT -------
+            case 37:
+            gameState = this.swapHandler(-1, 0);                    
+                break;
 
-                //---- TOP --------
-                case 38:
-                    gameState = this.swapHandler(0, -1);                  
-                    break;
+            //---- TOP --------
+            case 38:
+            gameState = this.swapHandler(0, -1);                  
+                break;
 
-                //---- RIGHT ------
-                case 39:
-                    gameState = this.swapHandler(1, 0);
-                    break;
+            //---- RIGHT ------
+            case 39:
+            gameState = this.swapHandler(1, 0);
+                break;
 
-                //---- DOWN -------
-                case 40:
-                    gameState = this.swapHandler(0, 1);                
-                    break;
-            }
-            
-            return gameState;
-        } catch (error) {}
+            //---- DOWN -------
+            case 40:
+            gameState = this.swapHandler(0, 1);
+                break;
+        }
+        return gameState;
     }
 
     
@@ -117,11 +120,42 @@ export default class Game extends React.Component {
     // ---------------------------------------
 
     defaultGameState(){
-        let gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({y, x})));   
+        let gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({y, x})));  
         gameState[3][3].main = true;
         return gameState;
     }
-    
+
+    swapHandler(a, b) {
+        let gs = this.state.gameState;
+        let main = this.findMain(gs);
+        let item = {
+            y: main.y + b, 
+            x: main.x + a
+        };  
+
+        if ((item.y < 4 && item.y > -1) && (item.x < 4 && item.x > -1) ) return this.swapArrayElem(gs, main, item);
+    }
+
+    findMain(gs){
+        let main;
+        try {
+            gs.forEach((val, y) => val.forEach((item, x) => {
+                if (item.main) {
+                    main = {y, x};
+                    throw "The main one found";
+                }
+            }));   
+        } catch (error) {}
+        return main;
+    }
+
+    swapArrayElem(arr, a, b ){
+        let c = arr[a.y][a.x];
+        arr[a.y][a.x] = arr[b.y][b.x];
+        arr[b.y][b.x] = c;
+        return arr;
+    }
+  
     shufleFisherYates(arr){ 
         for (let i = arr.length-1 ; i > 0 ; i--) {
             for (let j = arr.length -1; j > 0 ; j--) {
@@ -135,34 +169,8 @@ export default class Game extends React.Component {
         return arr;
     }
 
-    swapHandler(a, b) {
-        let gs = this.state.gameState;
-        let main;
-        gs.forEach((val, y) => val.forEach((item, x) => {
-            try {
-                if (item.main) {
-                    main = {y, x};
-                    throw BreakException;
-                }   
-            } catch (error) {}
-        }));
-
-        let item = {
-            y: main.y + b, 
-            x: main.x + a
-        };        
-        if (gs[item.y][item.x] != undefined) return this.swapArrayElem(gs, main, item);
-    }
-
-    swapArrayElem(arr, a, b ){
-        let c = arr[a.y][a.x];
-        arr[a.y][a.x] = arr[b.y][b.x];
-        arr[b.y][b.x] = c;
-        return arr;
-    }
-
     // ---------------------------------------
-    // ---------RENDERING AND HIM TOOLS
+    // ---------RENDERING AND HIS TOOLS
     // ---------------------------------------
 
 
