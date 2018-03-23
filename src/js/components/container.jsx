@@ -92,22 +92,22 @@ export default class Game extends React.Component {
         switch (key) {
             //---- LEFT -------
             case 37:
-            gameState = this.swapHandler(-1, 0);                    
+                gameState = this.swapHandler(1, 0);
                 break;
 
             //---- TOP --------
             case 38:
-            gameState = this.swapHandler(0, -1);                  
+                gameState = this.swapHandler(0, 1);
                 break;
 
             //---- RIGHT ------
             case 39:
-            gameState = this.swapHandler(1, 0);
+                gameState = this.swapHandler(-1, 0);                    
                 break;
 
             //---- DOWN -------
             case 40:
-            gameState = this.swapHandler(0, 1);
+                gameState = this.swapHandler(0, -1);                  
                 break;
         }
         return gameState;
