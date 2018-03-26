@@ -15,8 +15,8 @@ You can play in 15-puzzle at this link at [GitHub Pages][github-pages]
 ### Todos
 
  - Button "#shufle" can generate unsolvable position of squares.
- - Annimation of moving main square.
- - Feautiful victory message (modal window).
+ - Animation of moving main square.
+ - Beautiful victory message (modal window).
 
 License
 ----
