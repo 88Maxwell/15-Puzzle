@@ -22,13 +22,12 @@ const config = {
     devServer: {
         contentBase: paths.SRC,
         stats: 'errors-only',
-        // compress: true,
         port: 9000
     },
 
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.join(paths.ROOT, 'index.html'),
+            // filename: path.join(paths., 'index.html'),
             template: path.join(paths.SRC, 'index.html'),
         }),
         new ExtractTextPlugin('style.bundle.css')

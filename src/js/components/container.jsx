@@ -2,23 +2,31 @@ import React from 'react';
 import Item from './item';
 
 export default class Game extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             wrongItems: [],
             gameState:  this.defaultGameState()
         };
-    
-    // ----------------BINDING
+        
+        // ----------------BINDINGS
+        this.stateSetter = this.stateSetter.bind(this);
         this.shuffleGame = this.shuffleGame.bind(this);
         this.changeGameState = this.changeGameState.bind(this);
     }
 
-    // ---------------------------------------
+
+    // ------------------------------------
     // ------------WORK WITH STATES
     // ---------------------------------------
-
+    
+    componentDidMount(){
+        this.container.focus();
+    }
+      
     stateSetter(gameState, wrongs){
+        this.container.focus();        
         this.setState({
             gameState: gameState || this.state.gameState,
             wrongItems: wrongs || this.state.wrongItems
@@ -27,10 +35,10 @@ export default class Game extends React.Component {
 
     getWrongItems(gameState){        
         let wrongs = [];
-        try {
+        if (gameState != undefined) {
             gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));
-            return wrongs;         
-        } catch (error) {return null;} // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
+            return wrongs;
+        } else return null; // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
     }
 
     // ---------------------------------------
@@ -38,7 +46,7 @@ export default class Game extends React.Component {
     // ---------------------------------------
 
     shuffleGame(ev){
-        this.refs.container.focus();
+        // this.focus();
         let gs = this.shufleFisherYates(this.state.gameState);
         let wrongs = this.getWrongItems(gs);
 
@@ -59,9 +67,16 @@ export default class Game extends React.Component {
         }
     }
 
+
     // ---------------------------------------
-    // ------------STATES HANDLERS
+    // ----------------SOME TOOLS
     // ---------------------------------------
+   
+    defaultGameState(){
+        let gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({y, x})));  
+        gameState[3][3].main = true;
+        return gameState;
+    }
 
     swapItems(key){
         let gameState;
@@ -89,38 +104,22 @@ export default class Game extends React.Component {
         return gameState;
     }
 
-    // ---------------------------------------
-    // ----------------SOME TOOLS
-    // ---------------------------------------
-
-    defaultGameState(){
-        let gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({y, x})));  
-        gameState[3][3].main = true;
-        return gameState;
-    }
-
     swapHandler(a, b) {
         let gs = this.state.gameState;
         let main = this.findMain(gs);
         let item = {
-            y: main.y + b, 
-            x: main.x + a
+            y: main.y + b,
+            x: main.x + a 
         };  
+
         if ((item.y < 4 && item.y > -1) && (item.x < 4 && item.x > -1) ) 
-            return this.swapArrayElem(gs, main, item);
+            return this.swapArrayElem(gs, main, item);  
     }
 
     findMain(gs){
-        let main;
-        try {
-            gs.forEach((val, y) => val.forEach((item, x) => {
-                if (item.main) {
-                    main = {y, x};
-                    throw "We are find our main and dont wanna find any more!"
-                }
-            }));       
-        } catch (error) {}
-        return main;
+        for (let y = 0; y < gs.length; y++) 
+            for (let x = 0; x < gs[y].length; x++)
+                if (gs[y][x].main) return {y, x};
     }
 
     swapArrayElem(arr, a, b ){
@@ -155,11 +154,11 @@ export default class Game extends React.Component {
                 let right = !this.state.wrongItems.includes(item);
                 return (
                     <Item 
-                        key={"item-" + number.toString()}
+                        key={`item-${number.toString()}`}
                         isMain={item.main} 
-                        isRight={right} 
+                        isRight={right}
+                        number={number}
                     >
-                        {!item.main ? number : ""}
                     </Item>
                 );
             });
@@ -184,7 +183,8 @@ export default class Game extends React.Component {
 
             <div
                 key="container"
-                ref="container"
+                autoFocus
+                ref={(input) => { this.container = input; }}
                 onKeyDown={this.changeGameState}
                 tabIndex="0"
                 className="l-container"
