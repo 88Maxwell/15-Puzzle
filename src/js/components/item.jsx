@@ -2,16 +2,13 @@ import React from 'react';
 
 export default class Item extends React.Component {
     render(){
+        let main = this.props.isMain  ? "l-main-item" : "";
+        let right = this.props.isRight  ? "right" : "" ;
         return (
             <div
-                // key={"item-" + this.props.id}
-                className="item-wrapper"
+                className={`item ${right} ${main}`}
             >
-                <div 
-                    className={"item " + this.props.right + this.props.main}
-                >
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </div>
         );
     }

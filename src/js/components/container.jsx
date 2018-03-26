@@ -1,23 +1,16 @@
 import React from 'react';
-import Navigation from './navigation';
 import Item from './item';
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
-        let gameState = this.initGame()
         this.state = {
-            enabled: false,
             wrongItems: [],
-            gameState: gameState
+            gameState:  this.defaultGameState()
         };
     
     // ----------------BINDING
-        this.startGame = this.startGame.bind(this);
-        this.breakGame = this.breakGame.bind(this);
-
-        this.shufleGame = this.shufleGame.bind(this);
-        this.initGame = this.initGame.bind(this);
+        this.shuffleGame = this.shuffleGame.bind(this);
         this.changeGameState = this.changeGameState.bind(this);
     }
 
@@ -25,9 +18,8 @@ export default class Game extends React.Component {
     // ------------WORK WITH STATES
     // ---------------------------------------
 
-    stateSetter(enabled, gameState, wrongs){
+    stateSetter(gameState, wrongs){
         this.setState({
-            enabled: enabled,
             gameState: gameState || this.state.gameState,
             wrongItems: wrongs || this.state.wrongItems
         });
@@ -37,7 +29,6 @@ export default class Game extends React.Component {
         let wrongs = [];
         try {
             gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));
-            console.log();
             return wrongs;         
         } catch (error) {return null;} // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
     }
@@ -46,46 +37,31 @@ export default class Game extends React.Component {
     // ------------EVENTS CALLER
     // ---------------------------------------
 
-    startGame(ev){
+    shuffleGame(ev){
         this.refs.container.focus();
-        let gs = this.shufleGame();
+        let gs = this.shufleFisherYates(this.state.gameState);
         let wrongs = this.getWrongItems(gs);
 
-        this.stateSetter(true, gs, wrongs);
-    }
-
-    breakGame(ev){
-        this.stateSetter(false, this.initGame(), []) ;
+        this.stateSetter(gs, wrongs);
     }
 
     changeGameState(ev){
-        if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
+        if (ev.keyCode <=40 && ev.keyCode >= 37) {
             let gs = this.swapItems(ev.keyCode);
             let wrongs = this.getWrongItems(gs);
-            let enabled = true;
 
             if(wrongs != null)
                 if (wrongs.length == 0) {
                     alert("YOU ARE WIN A GAME!!!");
-                    enabled = false;
                 }             
             
-            this.stateSetter(enabled, gs, wrongs);
+            this.stateSetter(gs, wrongs);
         }
     }
 
     // ---------------------------------------
     // ------------STATES HANDLERS
     // ---------------------------------------
-
-    
-    initGame(){
-        return this.defaultGameState();
-    }
-
-    shufleGame(){
-        return this.shufleFisherYates(this.state.gameState);
-    }
 
     swapItems(key){
         let gameState;
@@ -113,8 +89,6 @@ export default class Game extends React.Component {
         return gameState;
     }
 
-    
-
     // ---------------------------------------
     // ----------------SOME TOOLS
     // ---------------------------------------
@@ -132,8 +106,8 @@ export default class Game extends React.Component {
             y: main.y + b, 
             x: main.x + a
         };  
-
-        if ((item.y < 4 && item.y > -1) && (item.x < 4 && item.x > -1) ) return this.swapArrayElem(gs, main, item);
+        if ((item.y < 4 && item.y > -1) && (item.x < 4 && item.x > -1) ) 
+            return this.swapArrayElem(gs, main, item);
     }
 
     findMain(gs){
@@ -142,9 +116,9 @@ export default class Game extends React.Component {
             gs.forEach((val, y) => val.forEach((item, x) => {
                 if (item.main) {
                     main = {y, x};
-                    throw "The main one found";
+                    throw "We are find our main and dont wanna find any more!"
                 }
-            }));   
+            }));       
         } catch (error) {}
         return main;
     }
@@ -182,8 +156,8 @@ export default class Game extends React.Component {
                 return (
                     <Item 
                         key={"item-" + number.toString()}
-                        main={item.main ? "l-main-item" : ""} 
-                        right={right ? "right " : ""} 
+                        isMain={item.main} 
+                        isRight={right} 
                     >
                         {!item.main ? number : ""}
                     </Item>
@@ -200,27 +174,23 @@ export default class Game extends React.Component {
             >
                 15-puzzle
             </h1>,
-
-            <Navigation
-                key="nav"
-                startGame={this.startGame}
-                breakGame={this.breakGame}
-                winGame={this.winGame}
-            />,                    
-            <div
-                key="container-wrapper"         
-                className="l-container-wrapper"
+            <div 
+                onClick={this.shuffleGame} 
+                className="btn" 
+                key="break"
             >
-                <div
-                    key="container"
-                    ref="container"
-                    onKeyDown={this.changeGameState}
-                    tabIndex="0"
-                    className="l-container"
-                >
-                    {this.renderItems()}                        
-                </div>            
-            </div>
+                #Shuffle
+            </div>,
+
+            <div
+                key="container"
+                ref="container"
+                onKeyDown={this.changeGameState}
+                tabIndex="0"
+                className="l-container"
+            >
+                {this.renderItems()}                        
+            </div>            
         ];
     }
 }
