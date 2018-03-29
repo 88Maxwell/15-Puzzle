@@ -6,19 +6,16 @@ import Item from './item';
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
-        let gameState = this.initGame()
+        let gameState = this.defaultGameState();
         this.state = {
             enabled: false,
             wrongItems: [],
             gameState: gameState
         };
     
-    // ----------------BINDING
+        // ----------------BINDING
         this.startGame = this.startGame.bind(this);
         this.breakGame = this.breakGame.bind(this);
-
-        this.shufleGame = this.shufleGame.bind(this);
-        this.initGame = this.initGame.bind(this);
         this.changeGameState = this.changeGameState.bind(this);
     }
 
@@ -36,11 +33,10 @@ export default class Game extends React.Component {
 
     getWrongItems(gameState){        
         let wrongs = [];
-        try {
+        if (gameState != undefined) {
             gameState.forEach((val, y) => val.forEach((item, x) => (!(item.x == x && item.y == y)) ? wrongs.push(item) : null));
-            console.log();
-            return wrongs;         
-        } catch (error) {return null;} // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
+            return wrongs;
+        } else return null; // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
     }
 
     // ---------------------------------------
@@ -48,15 +44,15 @@ export default class Game extends React.Component {
     // ---------------------------------------
 
     startGame(ev){
-        this.refs.container.focus();
-        let gs = this.shufleGame();
+        this.container.focus();
+        let gs = this.shufleFisherYates(this.state.gameState);
         let wrongs = this.getWrongItems(gs);
 
         this.stateSetter(true, gs, wrongs);
     }
 
     breakGame(ev){
-        this.stateSetter(false, this.initGame(), []) ;
+        this.stateSetter(false, this.defaultGameState(), []) ;
     }
 
     changeGameState(ev){
@@ -65,27 +61,11 @@ export default class Game extends React.Component {
             let wrongs = this.getWrongItems(gs);
             let enabled = true;
 
-            if(wrongs != null)
-                if (wrongs.length == 0) {
-                    alert("YOU ARE WIN A GAME!!!");
-                    enabled = false;
-                }             
-            
+            if(wrongs != null && wrongs.length == 0)
+                alert("YOU ARE WIN A GAME!!!");
+                enabled = false;       
             this.stateSetter(enabled, gs, wrongs);
         }
-    }
-
-    // ---------------------------------------
-    // ------------STATES HANDLERS
-    // ---------------------------------------
-
-    
-    initGame(){
-        return this.defaultGameState();
-    }
-
-    shufleGame(){
-        return this.shufleFisherYates(this.state.gameState);
     }
 
     swapItems(key){
@@ -93,28 +73,26 @@ export default class Game extends React.Component {
         switch (key) {
             //---- LEFT -------
             case 37:
-                gameState = this.swapHandler(1, 0);
+                gameState = this.swapHandler(-1, 0);                    
                 break;
 
             //---- TOP --------
             case 38:
-                gameState = this.swapHandler(0, 1);
+                gameState = this.swapHandler(0, -1);                  
                 break;
 
             //---- RIGHT ------
             case 39:
-                gameState = this.swapHandler(-1, 0);                    
+                gameState = this.swapHandler(1, 0);
                 break;
 
             //---- DOWN -------
             case 40:
-                gameState = this.swapHandler(0, -1);                  
+                gameState = this.swapHandler(0, 1);
                 break;
         }
         return gameState;
     }
-
-    
 
     // ---------------------------------------
     // ----------------SOME TOOLS
@@ -138,19 +116,12 @@ export default class Game extends React.Component {
     }
 
     findMain(gs){
-        let main;
-        try {
-            gs.forEach((val, y) => val.forEach((item, x) => {
-                if (item.main) {
-                    main = {y, x};
-                    throw "The main one found";
-                }
-            }));   
-        } catch (error) {}
-        return main;
+        for (let y = 0; y < gs.length; y++) 
+            for (let x = 0; x < gs[y].length; x++)
+                if (gs[y][x].main) return {y, x};
     }
 
-    swapArrayElem(arr, a, b ){
+    swapArrayElem(arr, a, b){
         let c = arr[a.y][a.x];
         arr[a.y][a.x] = arr[b.y][b.x];
         arr[b.y][b.x] = c;
@@ -182,11 +153,11 @@ export default class Game extends React.Component {
                 let right = !this.state.wrongItems.includes(item);
                 return (
                     <Item 
-                        key={"item-" + number.toString()}
-                        main={item.main ? "l-main-item" : ""} 
-                        right={right ? "right " : ""} 
+                        key={`item-${number.toString()}`}
+                        isMain={item.main} 
+                        isRight={right}
+                        number={number}
                     >
-                        {!item.main ? number : ""}
                     </Item>
                 );
             });
@@ -206,21 +177,20 @@ export default class Game extends React.Component {
                 key="nav"
                 startGame={this.startGame}
                 breakGame={this.breakGame}
-                winGame={this.winGame}
-            />,                    
+            />,    
+
             <div
                 key="container-wrapper"         
                 className="l-container-wrapper"
             >
                 <div
-                    key="container"
-                    ref="container"
+                    ref={(input) => { this.container = input; }}
                     onKeyDown={this.changeGameState}
                     tabIndex="0"
                     className="l-container"
                 >
                     {this.renderItems()}                        
-                </div>            
+                </div>
             </div>
         ];
     }
