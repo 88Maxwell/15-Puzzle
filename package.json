@@ -7,9 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack -p",
-    "dev": "webpack-dev-server -d",
-    "server": "http-server -p 3000.",
-    "start": "npm run dev & npm run server"
+    "dev": "webpack-dev-server -d"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

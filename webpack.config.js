@@ -27,7 +27,7 @@ const config = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            // filename: path.join(paths., 'index.html'),
+            filename: path.join(paths.DIST, 'index.html'),
             template: path.join(paths.SRC, 'index.html'),
         }),
         new ExtractTextPlugin('style.bundle.css')
