@@ -57,13 +57,15 @@ export default class Game extends React.Component {
 
     changeGameState(ev){
         if (this.state.enabled && ev.keyCode <=40 && ev.keyCode >= 37) {
-            let gs = this.swapItems(ev.keyCode);
-            let wrongs = this.getWrongItems(gs);
-            let enabled = true;
+            let gs = this.swapItems(ev.keyCode),
+                wrongs = this.getWrongItems(gs),
+                enabled = true;
 
-            if(wrongs != null && wrongs.length == 0)
+            if(wrongs != null && wrongs.length == 0){
                 alert("YOU ARE WIN A GAME!!!");
-                enabled = false;       
+                enabled = false;
+            }
+            
             this.stateSetter(enabled, gs, wrongs);
         }
     }
