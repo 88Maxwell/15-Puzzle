@@ -14,10 +14,10 @@ const config = {
 
     output: {
         path: paths.DIST,
-        filename: 'index.bundle.js'
+        filename: 'js/bundle.js'
     },
 
-    devtool: "cheap-module-source-map",
+    devtool: "eval",
 
     devServer: {
         contentBase: paths.SRC,
@@ -31,7 +31,7 @@ const config = {
             filename: path.join(paths.DIST, 'index.html'),
             template: path.join(paths.SRC, 'index.html'),
         }),
-        new ExtractTextPlugin('style.bundle.css')
+        new ExtractTextPlugin('css/bundle.css')
     ],
     
     module: {
@@ -57,7 +57,7 @@ const config = {
 
     resolve: {
         extensions: ['.js', '.jsx'],
-      },
+    },
     
 }
 

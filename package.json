@@ -2,14 +2,16 @@
   "name": "15",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/88Maxwell/88Maxwell.github.io.git",
-  "author": "88maxwell <maxwell.soltyk@mail.ru>",
+  "repository": "https://github.com/88Maxwell/15-Puzzle",
+  "author": "88maxwell <maxwell88soltyk@gmail.com>",
   "license": "MIT",
+  "homepage": "https://88maxwell.github.io/15-Puzzle/",
   "scripts": {
     "build": "webpack -p",
     "dev": "webpack-dev-server -d",
-    "server": "http-server -p 3000.",
-    "start": "npm run dev & npm run server"
+    "start": "yarn run dev & yarn run server",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -19,8 +21,8 @@
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "gh-pages": "^1.1.0",
     "html-webpack-plugin": "^3.0.6",
-    "http-server": "^0.11.1",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

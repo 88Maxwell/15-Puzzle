@@ -1,5 +1,6 @@
 Junior Frontend Developer.pdf
 node_modules/
+dist/
 .vscode/
 yarn-error.log
 yarn.lock
