@@ -6,6 +6,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    user-select: none;
     width: 40vh;
     height: 40vh;
     background-color: Second;

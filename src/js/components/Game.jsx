@@ -1,8 +1,8 @@
 import React from "react";
 import Navigation from "./Navigation/Navigation";
 import Item from "./Item/Item";
+import Swipe from "react-swipe-component";
 import Container from "./st-game";
-
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -17,6 +17,10 @@ export default class Game extends React.Component {
         // ----------------BINDING
         this.startGame = this.startGame.bind(this);
         this.breakGame = this.breakGame.bind(this);
+        this.onSwipeLeftListener = this._onSwipeLeftListener.bind(this);
+        this.onSwipeRightListener = this._onSwipeRightListener.bind(this);
+        this.onSwipeDownListener = this._onSwipeUpListener.bind(this);
+        this.onSwipeUpListener = this._onSwipeDownListener.bind(this);
         this.changeGameState = this.changeGameState.bind(this);
     }
 
@@ -71,6 +75,22 @@ export default class Game extends React.Component {
 
             this.stateSetter(enabled, gs, wrongs);
         }
+    }
+
+    _onSwipeLeftListener() {
+        this.changeGameState({keyCode: 37});
+    }
+
+    _onSwipeUpListener() {
+        this.changeGameState({keyCode: 40});
+    }
+
+    _onSwipeRightListener() {
+        this.changeGameState({keyCode: 39});
+    }
+    
+    _onSwipeDownListener() {
+        this.changeGameState({keyCode: 38});
     }
 
     swapItems(key) {
@@ -172,15 +192,24 @@ export default class Game extends React.Component {
             <Navigation key="nav" startGame={this.startGame} breakGame={this.breakGame} />,
 
             <div key="container-wrapper">
-                <Container
-                    innerRef={input => {
-                        this.container = input;
-                    }}
-                    onKeyDown={this.changeGameState}
-                    tabIndex="0"
+                <Swipe
+                    nodeName="div"
+                    mouseSwipe={true}
+                    onSwipedLeft={this.onSwipeLeftListener}
+                    onSwipedRight={this.onSwipeRightListener}
+                    onSwipedDown={this.onSwipeDownListener}
+                    onSwipedUp={this.onSwipeUpListener}
                 >
-                    {this.renderItems()}
-                </Container>
+                    <Container
+                        innerRef={input => {
+                            this.container = input;
+                        }}
+                        onKeyDown={this.changeGameState}
+                        tabIndex="0"
+                    >
+                        {this.renderItems()}
+                    </Container>
+                </Swipe>
             </div>
         ];
     }
