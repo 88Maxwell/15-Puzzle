@@ -2,6 +2,7 @@
     "name": "15puzzle",
     "version": "0.2.0",
     "private": false,
+    "homepage": "https://88maxwell.github.io/15-Puzzle",
     "dependencies": {
         "prop-types": "^15.6.2",
         "react": "^16.8.3",
