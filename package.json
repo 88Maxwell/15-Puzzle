@@ -15,7 +15,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "serve": "serve -s build",
-        "deploy": "gh-pages -d dist"
+        "deploy": "gh-pages --remote github -d build"
     },
     "browserslist": [
         ">0.2%",
