@@ -1,4 +1,4 @@
-html, body {
+html,body {
     font-size: 18px;
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@ html, body {
     color: white;
 }
 
-.l-wrapper {
+#root {
     display: flex;
     flex-direction: column;
     justify-content: center;

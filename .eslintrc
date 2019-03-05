@@ -1,0 +1,8 @@
+{
+    "extends": ["react-app", "webbylab", "plugin:security/recommended"],
+    "rules": {
+        "func-style": "off",
+        "react/require-default-props": 0,
+        "security/detect-object-injection": "off"
+    }
+}
