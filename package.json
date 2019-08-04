@@ -2,6 +2,8 @@
     "name": "15-puzzle",
     "version": "0.2.1",
     "private": false,
+    "main": "/src/index.js",
+    "repository": "https://github.com/88Maxwell/15-Puzzle",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -9,7 +11,7 @@
         "test:unit": "react-scripts test",
         "test:lint": "eslint src --ext js,jsx",
         "serve": "serve -s build",
-        "deploy": "gh-pages --remote github -d build"
+        "deploy": "gh-pages -d build"
     },
     "pre-commit": [
         "test:lint"
@@ -43,7 +45,7 @@
         "eslint-plugin-prefer-spread": "^1.0.3",
         "eslint-plugin-react": "^7.13.0",
         "eslint-plugin-security": "^1.4.0",
-        "gh-pages": "^2.0.1",
+        "gh-pages": "2.0",
         "pre-commit": "^1.2.2",
         "serve": "^11.1.0"
     }
