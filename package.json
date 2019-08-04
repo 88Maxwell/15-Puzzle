@@ -11,13 +11,9 @@
         "serve": "serve -s build",
         "deploy": "gh-pages --remote github -d build"
     },
-    "dependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
-        "react-scripts": "^3.0.1",
-        "styled-components": "^4.3.2"
-    },
+    "pre-commit": [
+        "test:lint"
+    ],
     "browserslist": {
         "production": [
             ">0.2%",
@@ -30,6 +26,13 @@
             "last 1 safari version"
         ]
     },
+    "dependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6",
+        "react-scripts": "^3.0.1",
+        "styled-components": "^4.3.2"
+    },
     "devDependencies": {
         "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend",
         "eslint-loader": "^2.1.1",
@@ -41,6 +44,7 @@
         "eslint-plugin-react": "^7.13.0",
         "eslint-plugin-security": "^1.4.0",
         "gh-pages": "^2.0.1",
+        "pre-commit": "^1.2.2",
         "serve": "^11.1.0"
     }
 }

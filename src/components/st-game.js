@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import styled from "styled-components";
 import { Second, Main, Button, ButtonHover, Right, Item } from "./st-theame";
-=======
-import styled from 'styled-components';
-import { Second, Main,  Button, ButtonHover, Right, Item } from './st-theame';
->>>>>>> 619cecfabdcad71c270626ac176131d88e90f4c5
 
 export const Nav = styled.nav`
     display: flex;
@@ -38,19 +33,11 @@ export const Container = styled.div`
 
 function setBgColor(props) {
     switch (props.state) {
-<<<<<<< HEAD
         case "default":
             return Item;
         case "main":
             return Second;
         case "right":
-=======
-        case 'default':
-            return Item;
-        case 'main':
-            return Second;
-        case 'right':
->>>>>>> 619cecfabdcad71c270626ac176131d88e90f4c5
             return Right;
         default:
             break;

@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React, { Fragment } from "react";
 import { Container, Btn, Nav, Tile } from "./st-game";
-=======
-import React, { Fragment } from 'react';
-import { Container, Btn, Nav, Tile } from './st-game';
->>>>>>> 619cecfabdcad71c270626ac176131d88e90f4c5
 
 export default class Game extends React.Component {
     state = {
@@ -166,17 +161,10 @@ export default class Game extends React.Component {
                 const number = item.x + item.y * 4 + 1;
                 const right = !this.state.wrongItems.includes(item);
 
-<<<<<<< HEAD
                 let tileState = "default";
 
                 if (item.main) tileState = "main";
                 else if (right) tileState = "right";
-=======
-                let tileState = 'default';
-
-                if (item.main) tileState = 'main';
-                else if (right) tileState = 'right';
->>>>>>> 619cecfabdcad71c270626ac176131d88e90f4c5
 
                 return (
                     <Tile key={number} state={tileState}>
@@ -193,17 +181,10 @@ export default class Game extends React.Component {
                 <h1>15-puzzle</h1>
                 <Nav>
                     <Btn onClick={this.handleStartGame}>#shuffleGame</Btn>
-<<<<<<< HEAD
-                    <Btn onClick={this.handleBreakGame}>#breakGame</Btn>
-                </Nav>
-                <div>
-                    <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex="0">
-=======
                     <Btn onClick={this.handleBreakGame}>#handleBreakGame</Btn>
                 </Nav>
                 <div>
-                    <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex='0'>
->>>>>>> 619cecfabdcad71c270626ac176131d88e90f4c5
+                    <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex="0">
                         {this.generateItems()}
                     </Container>
                 </div>
