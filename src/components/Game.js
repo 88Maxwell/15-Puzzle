@@ -181,7 +181,7 @@ export default class Game extends React.Component {
                 <h1>15-puzzle</h1>
                 <Nav>
                     <Btn onClick={this.handleStartGame}>#shuffleGame</Btn>
-                    <Btn onClick={this.handleBreakGame}>#handleBreakGame</Btn>
+                    <Btn onClick={this.handleBreakGame}>#breakGame</Btn>
                 </Nav>
                 <div>
                     <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex="0">
