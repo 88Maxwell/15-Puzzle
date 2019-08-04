@@ -1,6 +1,6 @@
 {
-    "name": "15-puzzle2",
-    "version": "0.2.0",
+    "name": "15-puzzle",
+    "version": "0.2.1",
     "private": false,
     "scripts": {
         "start": "react-scripts start",
