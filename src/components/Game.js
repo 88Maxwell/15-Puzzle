@@ -1,4 +1,7 @@
 import React, { Fragment } from "react";
+
+import shufleFisherYates from "../algorithms/shufleFisherYates";
+import isSolvable from "../algorithms/checkAtSolvability";
 import { Container, Btn, Nav, Tile } from "./st-game";
 
 export default class Game extends React.Component {
@@ -12,7 +15,7 @@ export default class Game extends React.Component {
         if (this.container) {
             this.container.focus();
         }
-        const gs = this.shufleFisherYates(this.state.gameState);
+        const gs = this.generateRandomSolvableGs(this.state.gameState);
         const wrongs = this.getWrongItems(gs);
 
         this.stateSetter(true, gs, wrongs);
@@ -80,24 +83,6 @@ export default class Game extends React.Component {
         }
     }
 
-
-    shufleFisherYates(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-            for (let j = arr.length - 1; j > 0; j--) {
-                const m = Math.floor(Math.random() * i);
-                const n = Math.floor(Math.random() * j);
-                const temp = arr[i][j];
-
-                /* eslint-disable */
-                arr[i][j] = arr[m][n];
-                arr[m][n] = temp;
-                /* eslint-enable */
-            }
-        }
-
-        return arr;
-    }
-
     swapArrayElem(arr, a, b) {
         const c = arr[a.y][a.x];
 
@@ -145,6 +130,26 @@ export default class Game extends React.Component {
             gameState  : gameState || this.state.gameState,
             wrongItems : wrongs || this.state.wrongItems
         });
+    }
+
+    generateRandomSolvableGs = gs => {
+        let matrix = shufleFisherYates(gs);
+
+        let i = 0;
+
+        let isSolved = isSolvable(matrix);
+
+        console.log("isSolved: ", isSolved);
+
+        while (!isSolved) {
+            matrix = shufleFisherYates(matrix);
+            isSolved = isSolvable(matrix);
+            console.log(i++);
+            console.log("isSolved: ", isSolved);
+            console.log("---------------------------------------------\n");
+        }
+
+        return matrix;
     }
 
     genereteDefaultGameState() {
