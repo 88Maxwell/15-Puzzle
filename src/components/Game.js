@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-import shufleFisherYates from "../algorithms/shufleFisherYates";
-import isSolvable from "../algorithms/checkAtSolvability";
+import shufleFisherYates from "../utils/shufleFisherYates";
+import isSolvable from "../utils/checkBoardSolvability";
 import { Container, Btn, Nav, Tile } from "./st-game";
 
 export default class Game extends React.Component {
@@ -135,18 +135,11 @@ export default class Game extends React.Component {
     generateRandomSolvableGs = gs => {
         let matrix = shufleFisherYates(gs);
 
-        let i = 0;
-
         let isSolved = isSolvable(matrix);
-
-        console.log("isSolved: ", isSolved);
 
         while (!isSolved) {
             matrix = shufleFisherYates(matrix);
             isSolved = isSolvable(matrix);
-            console.log(i++);
-            console.log("isSolved: ", isSolved);
-            console.log("---------------------------------------------\n");
         }
 
         return matrix;
