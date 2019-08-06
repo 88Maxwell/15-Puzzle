@@ -6,7 +6,7 @@ You can play in 15-puzzle at this link at [GitHub Pages][github-pages] (use arro
 
 ### Todos
 
-*   Button "#shufle" can generate unsolvable position of squares.
+<!-- *   Button "#shufle" can generate unsolvable position of squares. -->
 *   Annimation of moving main square.
 *   Feautiful victory message (modal window).
 
