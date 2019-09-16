@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import shufleFisherYates from "../utils/shufleFisherYates";
 import isSolvable from "../utils/checkBoardSolvability";
 import { Container, Btn, Nav, Tile } from "./st-game";
+import Swipe from "./Swipe";
 
 export default class Game extends React.Component {
     state = {
@@ -34,14 +35,13 @@ export default class Game extends React.Component {
 
             if (wrongs !== null && wrongs.length === 0) {
                 // eslint-disable-next-line
-                alert('YOU ARE WIN A GAME!!!');
+                alert("YOU ARE WIN A GAME!!!");
                 enabled = false;
             }
 
             this.stateSetter(enabled, gs, wrongs);
         }
     };
-
 
     getWrongItems(gameState) {
         const wrongs = [];
@@ -58,7 +58,6 @@ export default class Game extends React.Component {
     }
 
     setContainerRef = containerRef => (this.container = containerRef);
-
 
     swapHandler(a, b) {
         const gs = this.state.gameState;
@@ -143,7 +142,7 @@ export default class Game extends React.Component {
         }
 
         return matrix;
-    }
+    };
 
     genereteDefaultGameState() {
         const gameState = Array.from(Array(4), (val, y) => Array.from(Array(4), (item, x) => ({ y, x })));
@@ -182,9 +181,11 @@ export default class Game extends React.Component {
                     <Btn onClick={this.handleBreakGame}>#breakGame</Btn>
                 </Nav>
                 <div>
-                    <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex="0">
-                        {this.generateItems()}
-                    </Container>
+                    <Swipe onChangeGameState={this.handleChangeGameState}>
+                        <Container ref={this.setContainerRef} onKeyDown={this.handleChangeGameState} tabIndex="0">
+                            {this.generateItems()}
+                        </Container>
+                    </Swipe>
                 </div>
             </Fragment>
         );
