@@ -4,6 +4,7 @@
     "private": false,
     "main": "/src/index.js",
     "repository": "https://github.com/88Maxwell/15-Puzzle",
+    "homepage": "https://88maxwell.github.io/15-Puzzle",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -46,7 +47,7 @@
         "eslint-plugin-prefer-spread": "^1.0.3",
         "eslint-plugin-react": "^7.13.0",
         "eslint-plugin-security": "^1.4.0",
-        "gh-pages": "^2.1.0",
+        "gh-pages": "^2.1.1",
         "pre-commit": "^1.2.2",
         "serve": "^11.1.0"
     }
