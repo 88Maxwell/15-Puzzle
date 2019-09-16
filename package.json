@@ -1,6 +1,6 @@
 {
     "name": "15-puzzle",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "private": false,
     "main": "/src/index.js",
     "repository": "https://github.com/88Maxwell/15-Puzzle",
@@ -30,15 +30,15 @@
     },
     "dependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
-        "react-scripts": "^3.0.1",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        "react-scripts": "^3.1.1",
         "react-swipe-component": "^3.0.0",
         "styled-components": "^4.3.2"
     },
     "devDependencies": {
         "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend",
-        "eslint-loader": "^2.1.1",
+        "eslint-loader": "^3.0.0",
         "eslint-plugin-fetch": "^0.0.1",
         "eslint-plugin-import": "^2.17.3",
         "eslint-plugin-more": "^0.3.2",
@@ -46,7 +46,7 @@
         "eslint-plugin-prefer-spread": "^1.0.3",
         "eslint-plugin-react": "^7.13.0",
         "eslint-plugin-security": "^1.4.0",
-        "gh-pages": "2.0",
+        "gh-pages": "2.1.1",
         "pre-commit": "^1.2.2",
         "serve": "^11.1.0"
     }
