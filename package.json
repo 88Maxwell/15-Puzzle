@@ -35,7 +35,6 @@
         "react-dom": "^16.11.0",
         "react-scripts": "^3.2.0",
         "react-swipe-component": "^3.0.0",
-        "react-transition-group": "^4.3.0",
         "styled-components": "^4.4.0"
     },
     "devDependencies": {
