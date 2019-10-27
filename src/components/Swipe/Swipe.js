@@ -2,7 +2,7 @@ import React from "react";
 import { Swipe } from "react-swipe-component";
 import PropTypes from "prop-types";
 
-export default class Demo extends React.Component {
+export default class SwipeCustom extends React.Component {
     static propTypes = {
         children          : PropTypes.node.isRequired,
         onChangeGameState : PropTypes.func.isRequired

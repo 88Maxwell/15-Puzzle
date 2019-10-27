@@ -1,9 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 
-import shufleFisherYates from "../utils/shufleFisherYates";
-import isSolvable from "../utils/checkBoardSolvability";
-import { Container, Btn, Nav, Tile } from "./st-game";
-import Swipe from "./Swipe";
+import shufleFisherYates from "../../utils/shufleFisherYates";
+import isSolvable from "../../utils/checkBoardSolvability";
+import Swipe from "../Swipe";
+import mapArrowKey from "../../utils/mapArrowKey";
+import Tile from "../Tile";
+import { Container, Btn, Nav } from "./styles";
 
 export default class Game extends React.Component {
     state = {
@@ -48,8 +50,8 @@ export default class Game extends React.Component {
 
         if (gameState !== undefined) {
             gameState.forEach((val, y) =>
-                val.forEach((item, x) => (!(item.x === x && item.y === y) ? wrongs.push(item) : null))
-            );
+                val.forEach((item, x) =>
+                    (!(item.x === x && item.y === y) ? wrongs.push(item) : null)));
 
             return wrongs;
         }
@@ -93,42 +95,20 @@ export default class Game extends React.Component {
         return arr;
     }
 
-    swapItems(key) {
-        let gameState;
-
-        switch (key) {
-            // ---- LEFT -------
-            case 37:
-                gameState = this.swapHandler(-1, 0);
-                break;
-
-            // ---- TOP --------
-            case 38:
-                gameState = this.swapHandler(0, -1);
-                break;
-
-            // ---- RIGHT ------
-            case 39:
-                gameState = this.swapHandler(1, 0);
-                break;
-
-            // ---- DOWN -------
-            case 40:
-                gameState = this.swapHandler(0, 1);
-                break;
-            default:
-                break;
-        }
-
-        return gameState;
-    }
-
-    stateSetter(enabled, gameState, wrongs) {
-        this.setState({
-            enabled,
-            gameState  : gameState || this.state.gameState,
-            wrongItems : wrongs || this.state.wrongItems
+    swapItems = key =>
+        mapArrowKey(key, {
+            top    : () => this.swapHandler(0, -1),
+            bottom : () => this.swapHandler(0, 1),
+            right  : () => this.swapHandler(1, 0),
+            left   : () => this.swapHandler(-1, 0)
         });
+
+    stateSetter(enabled, state, wrongs) {
+        this.setState(({ gameState, wrongItems }) => ({
+            enabled,
+            gameState  : state || gameState,
+            wrongItems : wrongs || wrongItems
+        }));
     }
 
     generateRandomSolvableGs = gs => {
@@ -174,7 +154,7 @@ export default class Game extends React.Component {
 
     render() {
         return (
-            <Fragment>
+            <>
                 <h1>15-puzzle</h1>
                 <Nav>
                     <Btn onClick={this.handleStartGame}>#shuffleGame</Btn>
@@ -187,7 +167,7 @@ export default class Game extends React.Component {
                         </Container>
                     </Swipe>
                 </div>
-            </Fragment>
+            </>
         );
     }
 }
