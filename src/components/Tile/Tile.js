@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 import Tile from "./styles";
 
 function TileComponent({ children, state }) {
-    return (
-        <Tile state={state}>
-            {children}
-        </Tile>
-    );
+    return <Tile state={state}>{children}</Tile>;
 }
 
 TileComponent.propTypes = {

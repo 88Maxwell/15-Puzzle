@@ -28,7 +28,7 @@ export default class Game extends React.Component {
         this.stateSetter(false, this.genereteDefaultGameState(), []);
     };
 
-    handleChangeGameState = ev => {
+    handleChangeGameState = (ev) => {
         if (this.state.enabled && ev.keyCode <= 40 && ev.keyCode >= 37) {
             const gs = this.swapItems(ev.keyCode);
             const wrongs = this.getWrongItems(gs);
@@ -50,8 +50,8 @@ export default class Game extends React.Component {
 
         if (gameState !== undefined) {
             gameState.forEach((val, y) =>
-                val.forEach((item, x) =>
-                    (!(item.x === x && item.y === y) ? wrongs.push(item) : null)));
+                val.forEach((item, x) => (!(item.x === x && item.y === y) ? wrongs.push(item) : null)),
+            );
 
             return wrongs;
         }
@@ -59,7 +59,7 @@ export default class Game extends React.Component {
         return null; // set last version of wrongsItems, because (null || [last wrongs cofig])  => [last wrongs cofig]
     }
 
-    setContainerRef = containerRef => (this.container = containerRef);
+    setContainerRef = (containerRef) => (this.container = containerRef);
 
     swapHandler(a, b) {
         const gs = this.state.gameState;
@@ -69,7 +69,7 @@ export default class Game extends React.Component {
             x : main.x + a
         };
 
-        if (item.y < 4 && item.y > -1 && (item.x < 4 && item.x > -1)) {
+        if (item.y < 4 && item.y > -1 && item.x < 4 && item.x > -1) {
             return this.swapArrayElem(gs, main, item);
         }
     }
@@ -95,7 +95,7 @@ export default class Game extends React.Component {
         return arr;
     }
 
-    swapItems = key =>
+    swapItems = (key) =>
         mapArrowKey(key, {
             top    : () => this.swapHandler(0, -1),
             bottom : () => this.swapHandler(0, 1),
@@ -111,7 +111,7 @@ export default class Game extends React.Component {
         }));
     }
 
-    generateRandomSolvableGs = gs => {
+    generateRandomSolvableGs = (gs) => {
         let matrix = shufleFisherYates(gs);
 
         let isSolved = isSolvable(matrix);
@@ -133,8 +133,8 @@ export default class Game extends React.Component {
     }
 
     generateItems() {
-        return this.state.gameState.map(val => {
-            return val.map(item => {
+        return this.state.gameState.map((val) => {
+            return val.map((item) => {
                 const number = item.x + item.y * 4 + 1;
                 const right = !this.state.wrongItems.includes(item);
 
