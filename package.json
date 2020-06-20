@@ -31,11 +31,11 @@
     },
     "dependencies": {
         "prop-types": "^15.7.2",
-        "react": "^16.11.0",
-        "react-dom": "^16.11.0",
-        "react-scripts": "^3.2.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-scripts": "^3.4.1",
         "react-swipe-component": "^3.0.0",
-        "styled-components": "^4.4.0"
+        "styled-components": "^5.1.1"
     },
     "devDependencies": {
         "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend",
@@ -47,8 +47,8 @@
         "eslint-plugin-prefer-spread": "^1.0.3",
         "eslint-plugin-react": "^7.16.0",
         "eslint-plugin-security": "^1.4.0",
-        "gh-pages": "^2.1.1",
+        "gh-pages": "^3.0.0",
         "pre-commit": "^1.2.2",
-        "serve": "^11.2.0"
+        "serve": "^11.3.2"
     }
 }
