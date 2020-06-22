@@ -4,12 +4,43 @@ import Swipe from "../Swipe";
 import mapArrowKey from "../../utils/mapArrowKey";
 import Tile from "../Tile";
 import { Container, Btn, Nav } from "./styles";
-import { gameActionTypes, gameInitialState, gameReducer } from "./Game.reducer";
-import { getWrongItems } from "./Game.utils";
+import {
+    genereteDefaultBoard, shuffleBoard, mixStatusToBoard, mapBoard
+} from "./Game.utils";
+
+const gameActionTypes = {
+    BREAK_GAME : "BREAK_GAME",
+    SET_STATE  : "SET_STATE",
+    INIT_GAME  : "INIT_GAME"
+};
+
+function gameReducer(state, action) {
+    const { enabled, board } = action.payload || {};
+
+    switch (action.type) {
+        case gameActionTypes.INIT_GAME:
+            return {
+                enabled : true,
+                board   : shuffleBoard(genereteDefaultBoard())
+            };
+        case gameActionTypes.BREAK_GAME:
+            return {
+                enabled : false,
+                board   : genereteDefaultBoard()
+            };
+        case gameActionTypes.SET_STATE:
+            return { enabled, board };
+        default:
+            throw new Error();
+    }
+}
 
 function Game() {
-    const [ state, dispatch ] = useReducer(gameReducer, gameInitialState);
     const containerRef = useRef();
+    const [ state, dispatch ] = useReducer(gameReducer, {
+        enabled : false,
+        board   : genereteDefaultBoard()
+    });
 
     const handleStartGame = () => {
         if (containerRef.current) containerRef.current.focus();
@@ -20,25 +51,22 @@ function Game() {
     const handleBreakGame = () => dispatch({ type: gameActionTypes.BREAK_GAME });
 
     const swapArrayElem = (arr, a, b) => {
-        const newArr = JSON.parse(JSON.stringify(arr));
-        const c = newArr[a.y][a.x];
+        const newBoard = mapBoard(state.board, (item) => ({ ...item }));
+        // const c = newBoard[a.y][a.x];
 
-        /* eslint-disable */
-        newArr[a.y][a.x] = { ...newArr[b.y][b.x] };
-        newArr[b.y][b.x] = { ...c };
-        /* eslint-enable */
+        [ newBoard[a.y][a.x], newBoard[b.y][b.x] ] = [ { ...newBoard[b.y][b.x] }, newBoard[a.y][a.x] ];
 
-        return newArr;
+        return newBoard;
     };
 
     const swapHandler = (a, b) => {
         let main;
 
         // eslint-disable-next-line
-        for (let y = 0; y < state.gameState.length; y++) {
+        for (let y = 0; y < state.board.length; y++) {
             // eslint-disable-next-line
-            for (let x = 0; x < state.gameState[y].length; x++) {
-                if (state.gameState[y][x].main) {
+            for (let x = 0; x < state.board[y].length; x++) {
+                if (state.board[y][x].main) {
                     main = { y, x };
                     break;
                 }
@@ -53,10 +81,10 @@ function Game() {
         };
 
         if (item.y < 4 && item.y > -1 && item.x < 4 && item.x > -1) {
-            return swapArrayElem(state.gameState, main, item);
+            return swapArrayElem(state.board, main, item);
         }
 
-        return undefined;
+        return state.board;
     };
 
     const swapItems = (key) => mapArrowKey(key, {
@@ -68,36 +96,26 @@ function Game() {
 
     const handleChangeGameState = (ev) => {
         if (state.enabled && ev.keyCode <= 40 && ev.keyCode >= 37) {
-            const gs = swapItems(ev.keyCode);
-            const wrongs = getWrongItems(gs);
-
-            let enabled = true;
-
-            if (wrongs !== null && wrongs.length === 0) {
-                // eslint-disable-next-line
-                alert("YOU ARE WIN A GAME!!!");
-                enabled = false;
-            }
+            const board = mixStatusToBoard(swapItems(ev.keyCode));
+            const isWin = board.flat(1).every((el) => el.isRight);
 
             dispatch({
                 type    : gameActionTypes.SET_STATE,
-                payload : {
-                    enabled,
-                    wrongItems : wrongs || state.wrongItems,
-                    gameState  : gs || state.gameState
-                }
+                payload : { enabled: !isWin, board }
             });
+
+            // eslint-disable-next-line no-alert
+            if (isWin) alert("YOU ARE WIN A GAME!!!");
         }
     };
 
-    const generateItems = () => state.gameState.map((val) => val.map((item) => {
+    const generateItems = () => state.board.map((val) => val.map((item) => {
         const number = item.x + item.y * 4 + 1;
-        const right = !state.wrongItems.find((el) => item.x === el.x && item.y === el.y);
 
         let tileState = "default";
 
         if (item.main) tileState = "main";
-        else if (right) tileState = "right";
+        else if (item.isRight) tileState = "right";
 
         return (
             <Tile key={number} state={tileState}>
