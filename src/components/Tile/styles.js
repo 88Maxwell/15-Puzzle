@@ -3,7 +3,7 @@ import { colors } from "../../utils/theame";
 
 const { Second, Right, Item } = colors;
 
-function setBgColor(state) {
+function setBgColor({ state }) {
     switch (state) {
         case "default":
             return Item;
@@ -14,6 +14,8 @@ function setBgColor(state) {
         default:
             break;
     }
+
+    throw new Error("setBgColor Error");
 }
 
 export default styled.div`
@@ -28,5 +30,5 @@ export default styled.div`
     height: 25%;
     border: 2.5px solid white;
     font-size: 1rem;
-    background-color: ${({ state }) => setBgColor(state)};
+    background-color: ${setBgColor};
 `;

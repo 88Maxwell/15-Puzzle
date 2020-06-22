@@ -1,4 +1,9 @@
-export default (key, { right, left, top, bottom })  => {
+export default (key, {
+    right,
+    left,
+    top,
+    bottom
+}) => {
     switch (key) {
         // ---- LEFT -------
         case 37:
@@ -18,4 +23,6 @@ export default (key, { right, left, top, bottom })  => {
         default:
             break;
     }
+
+    throw new Error("mapArrowKey errer");
 };

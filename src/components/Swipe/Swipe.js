@@ -1,40 +1,31 @@
 import React from "react";
-import { Swipe } from "react-swipe-component";
 import PropTypes from "prop-types";
+import { Swipe as SwipeBase } from "react-swipe-component";
 
-export default class SwipeCustom extends React.Component {
-    static propTypes = {
-        children          : PropTypes.node.isRequired,
-        onChangeGameState : PropTypes.func.isRequired
-    };
+function Swipe({ children, onChangeGameState }) {
+    const handleSwipeLeftListener = () => onChangeGameState({ keyCode: 37 }); // ---- LEFT -----
+    const handleSwipeDownListener = () => onChangeGameState({ keyCode: 40 }); // ---- TOP ------
+    const handleSwipeRightListener = () => onChangeGameState({ keyCode: 39 }); // ---- RIGHT ---
+    const handleSwipeUpListener = () => onChangeGameState({ keyCode: 38 }); // ---- DOWN -------
 
-    // ---- LEFT -------
-    handleSwipeLeftListener = () => this.props.onChangeGameState({ keyCode: 37 });
-
-    // ---- TOP -------
-    handleSwipeDownListener = () => this.props.onChangeGameState({ keyCode: 40 });
-
-    // ---- RIGHT -----
-    handleSwipeRightListener = () => this.props.onChangeGameState({ keyCode: 39 });
-
-    // ---- DOWN ------
-    handleSwipeUpListener = () => this.props.onChangeGameState({ keyCode: 38 });
-
-    render() {
-        const { children } = this.props;
-
-        return (
-            <Swipe
-                nodeName="div"
-                detectTouch
-                onSwipeEnd={this.handleSwipeEnd}
-                onSwipedLeft={this.handleSwipeLeftListener}
-                onSwipedRight={this.handleSwipeRightListener}
-                onSwipedDown={this.handleSwipeDownListener}
-                onSwipedUp={this.handleSwipeUpListener}
-            >
-                {children}
-            </Swipe>
-        );
-    }
+    return (
+        <SwipeBase
+            nodeName="div"
+            detectTouch
+            // onSwipeEnd={handleSwipeEnd} ???????????????
+            onSwipedLeft={handleSwipeLeftListener}
+            onSwipedRight={handleSwipeRightListener}
+            onSwipedDown={handleSwipeDownListener}
+            onSwipedUp={handleSwipeUpListener}
+        >
+            {children}
+        </SwipeBase>
+    );
 }
+
+Swipe.propTypes = {
+    children          : PropTypes.node.isRequired,
+    onChangeGameState : PropTypes.func.isRequired
+};
+
+export default Swipe;

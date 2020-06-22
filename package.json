@@ -38,16 +38,14 @@
         "styled-components": "^5.1.1"
     },
     "devDependencies": {
-        "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend",
-        "eslint-loader": "^3.0.2",
-        "eslint-plugin-fetch": "^0.0.1",
-        "eslint-plugin-import": "^2.17.3",
-        "eslint-plugin-more": "^0.3.2",
-        "eslint-plugin-no-require-lodash": "1.1.0",
-        "eslint-plugin-prefer-spread": "^1.0.3",
-        "eslint-plugin-react": "^7.16.0",
-        "eslint-plugin-security": "^1.4.0",
-        "gh-pages": "^3.0.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-config-airbnb": "^18.1.0",
+        "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend#4fdaeee74f46c9580e4858ce304bded4e97f913b",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-react": "^7.19.0",
+        "eslint-plugin-react-hooks": "^4.0.0",
+        "gh-pages": "^3.1.0",
         "pre-commit": "^1.2.2",
         "serve": "^11.3.2"
     }
