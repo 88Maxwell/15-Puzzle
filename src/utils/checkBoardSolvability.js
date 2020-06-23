@@ -1,8 +1,4 @@
-/* eslint-disable no-param-reassign */
-
-const getIndexOfMain = (matrix) => matrix
-    .reduce((acc, row) => [ ...acc, ...row ], [])
-    .findIndex((el) => el.main);
+const getIndexOfMain = (matrix) => matrix.reduce((acc, row) => [ ...acc, ...row ], []).findIndex((el) => el.main);
 
 const fromMatrixToComputedArr = (matrix) => matrix.reduce((acc, row) => {
     const computedRow = row.map((el) => el.x + el.y * matrix.length + 1);
@@ -14,8 +10,13 @@ const getInversionCount = (arr, N) => arr.reduce((acc, arrEl, index) => {
     if (arrEl !== N ** 2) {
         const slicedArr = arr.slice(index + 1);
 
-        // eslint-disable-next-line no-plusplus
-        return acc + slicedArr.reduce((accum, elem) => (arrEl < elem && arrEl !== 16 ? accum : ++accum), 0);
+        return (
+            acc
+                + slicedArr.reduce(
+                    (accumulator, elem) => (arrEl < elem && arrEl !== 16 ? accumulator : accumulator + 1),
+                    0
+                )
+        );
     }
 
     return acc;
@@ -24,10 +25,10 @@ const getInversionCount = (arr, N) => arr.reduce((acc, arrEl, index) => {
 const isEven = (number) => Math.floor(number / 2) === number / 2;
 const isOdd = (number) => !isEven(number);
 
-export default (matrix) => {
-    const N = matrix.length;
-    const indexOfMain = getIndexOfMain(matrix);
-    const computedArr = fromMatrixToComputedArr(matrix);
+export default function checkBoardSolvability(board) {
+    const N = board.length;
+    const indexOfMain = getIndexOfMain(board);
+    const computedArr = fromMatrixToComputedArr(board);
 
     const posOfMainFromBottomAtMatrix = N - Math.floor(indexOfMain / N);
     const inversion = getInversionCount(computedArr, N);
@@ -38,7 +39,8 @@ export default (matrix) => {
     const conditionTwoSubTwo = isEven(posOfMainFromBottomAtMatrix) && isOdd(inversion);
 
     return conditionOne || (conditionTwo && (conditionTwoSubOne || conditionTwoSubTwo));
-};
+}
+
 
 // const st = [
 //     [ { x: 0, y: 3 }, { x: 1, y: 0 }, { x: 1, y: 2 }, { x: 2, y: 0 } ],

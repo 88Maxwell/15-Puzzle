@@ -1,69 +1,34 @@
-import React, { useReducer, useRef } from "react";
+import React, { useContext, useRef } from "react";
 
 import Swipe from "../Swipe";
 import mapArrowKey from "../../utils/mapArrowKey";
 import Tile from "../Tile";
 import { Container, Btn, Nav } from "./styles";
-import {
-    genereteDefaultBoard,
-    shuffleBoard,
-    mixStatusToBoard,
-    mapBoard
-} from "./Game.utils";
-
-
-const gameActionTypes = {
-    BREAK_GAME : "BREAK_GAME",
-    SET_STATE  : "SET_STATE",
-    INIT_GAME  : "INIT_GAME"
-};
-
-function gameReducer(state, action) {
-    const { enabled, board } = action.payload || {};
-
-    switch (action.type) {
-        case gameActionTypes.INIT_GAME:
-            return {
-                enabled : true,
-                board   : shuffleBoard(genereteDefaultBoard())
-            };
-        case gameActionTypes.BREAK_GAME:
-            return {
-                enabled : false,
-                board   : genereteDefaultBoard()
-            };
-        case gameActionTypes.SET_STATE:
-            return { enabled, board };
-        default:
-            throw new Error();
-    }
-}
+import { BoardContext } from "../Board";
+import mapBoard from "../../utils/mapBoard";
+import getBoardWithStatus from "../../utils/getBoardWithStatus";
 
 function Game() {
     const containerRef = useRef();
-    const [ state, dispatch ] = useReducer(gameReducer, {
-        enabled : false,
-        board   : genereteDefaultBoard()
-    });
+    const { state, dispatch, actionTypes: boardActionTypes } = useContext(BoardContext);
 
     const handleStartGame = () => {
         if (containerRef.current) containerRef.current.focus();
 
-        dispatch({ type: gameActionTypes.INIT_GAME });
+        dispatch({ type: boardActionTypes.INIT_GAME });
     };
 
-    const handleBreakGame = () => dispatch({ type: gameActionTypes.BREAK_GAME });
+    const handleBreakGame = () => dispatch({ type: boardActionTypes.BREAK_GAME });
 
     const swapArrayElem = (arr, a, b) => {
         const newBoard = mapBoard(state.board, (item) => ({ ...item }));
-        // const c = newBoard[a.y][a.x];
 
         [ newBoard[a.y][a.x], newBoard[b.y][b.x] ] = [ { ...newBoard[b.y][b.x] }, newBoard[a.y][a.x] ];
 
         return newBoard;
     };
 
-    const swapHandler = (a, b) => {
+    const swapHandler = (offsetX, offsetY) => {
         let main;
 
         // eslint-disable-next-line
@@ -80,8 +45,8 @@ function Game() {
         if (!main) throw new Error("findMain error");
 
         const item = {
-            x : main.x + a,
-            y : main.y + b
+            x : main.x + offsetX,
+            y : main.y + offsetY
         };
 
         if (item.y < 4 && item.y > -1 && item.x < 4 && item.x > -1) {
@@ -100,11 +65,11 @@ function Game() {
 
     const handleChangeGameState = (ev) => {
         if (state.enabled && ev.keyCode <= 40 && ev.keyCode >= 37) {
-            const board = mixStatusToBoard(swapItems(ev.keyCode));
+            const board = getBoardWithStatus(swapItems(ev.keyCode));
             const isWin = board.flat(1).every((el) => el.isRight);
 
             dispatch({
-                type    : gameActionTypes.SET_STATE,
+                type    : boardActionTypes.SET_STATE,
                 payload : { enabled: !isWin, board }
             });
 
