@@ -10,7 +10,7 @@
         "build": "react-scripts build",
         "eject": "react-scripts eject",
         "test:unit": "react-scripts test",
-        "test:lint": "eslint src --ext js,jsx",
+        "test:lint": "eslint src --ext js,jsx,ts,tsx",
         "serve": "serve -s build",
         "deploy": "gh-pages -d build"
     },

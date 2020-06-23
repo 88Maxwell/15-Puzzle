@@ -24,7 +24,11 @@ function Game() {
 
     const handleBreakGame = () => dispatch({ type: boardActionTypeConstants.BREAK_GAME });
 
-    const swapArrayElem = (board: BoardCell[][], mainCell: BoardCell, targetCell: Pick<BoardCell, "x" | "y">) => {
+    const swapArrayElem = (
+        board: BoardCell[][],
+        mainCell: Pick<BoardCell, "x" | "y">,
+        targetCell: Pick<BoardCell, "x" | "y">,
+    ) => {
         const newBoard = mapBoard(board, (item) => ({ ...item }));
 
         [newBoard[mainCell.y][mainCell.x], newBoard[targetCell.y][targetCell.x]] = [
@@ -43,7 +47,7 @@ function Game() {
             // eslint-disable-next-line
             for (let x = 0; x < state.board[y].length; x++) {
                 if (state.board[y][x].isMain) {
-                    main = { ...state.board[y][x] };
+                    main = { y, x };
                     break;
                 }
             }
@@ -55,7 +59,8 @@ function Game() {
             x: main.x + offsetX,
             y: main.y + offsetY,
         };
-
+        console.log("main :>> ", main);
+        console.log("item :>> ", item);
         if (item.y < 4 && item.y > -1 && item.x < 4 && item.x > -1) {
             return swapArrayElem(state.board, main, item);
         }

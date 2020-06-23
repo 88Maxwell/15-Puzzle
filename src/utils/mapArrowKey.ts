@@ -24,6 +24,7 @@ export default (key: number, { right, left, top, bottom }: ArrowsFunction) => {
         // ---- DOWN -------
         case 40:
             return bottom();
+            
         default:
             break;
     }

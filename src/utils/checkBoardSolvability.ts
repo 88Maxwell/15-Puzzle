@@ -1,7 +1,7 @@
 import { BoardCell } from "../components/Board";
 
 const getIndexOfMain = (board: BoardCell[][]) =>
-    board.reduce((acc, row) => [...acc, ...row], []).findIndex((el) => el.isMain);
+    board.reduce((acc, row) => [...acc, ...row], []).findIndex((el) => el.isMain); // TODO move to board.flat(1).findIndex(...)
 
 const fromMatrixToComputedArr = (board: BoardCell[][]) =>
     board.reduce((acc: number[], row) => {
