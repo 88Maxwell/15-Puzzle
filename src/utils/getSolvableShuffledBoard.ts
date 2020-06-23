@@ -1,8 +1,9 @@
 import checkBoardSolvability from "./checkBoardSolvability";
 import shufleBoardFisherYates from "./shufleBoardFisherYates";
 import getBoardWithStatus from "./getBoardWithStatus";
+import { BoardCell } from "../components/Board";
 
-export default function getSolvableShuffledBoard(targetBoard) {
+export default function getSolvableShuffledBoard(targetBoard: BoardCell[][]) {
     let board = shufleBoardFisherYates(targetBoard);
 
     let isSolved = checkBoardSolvability(board);

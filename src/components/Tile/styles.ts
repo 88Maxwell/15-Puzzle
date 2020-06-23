@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import { colors } from "../../utils/theame";
+import { TileStatus } from "./Tile";
 
 const { Second, Right, Item } = colors;
 
-function setBgColor({ state }) {
-    switch (state) {
+type StyledTileProps = {
+    status: TileStatus;
+};
+
+function setBgColor(status: TileStatus) {
+    switch (status) {
         case "default":
             return Item;
         case "main":
@@ -27,5 +32,5 @@ export default styled.div`
     height: 25%;
     border: 2.5px solid white;
     font-size: 1rem;
-    background-color: ${setBgColor};
+    background-color: ${({ status }: StyledTileProps) => setBgColor(status)};
 `;

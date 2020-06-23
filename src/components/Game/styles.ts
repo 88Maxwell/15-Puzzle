@@ -21,7 +21,11 @@ export const Btn = styled.button`
     }
 `;
 
-export const Container = styled.div`
+type HasTabIndexStyledSystemProps = {
+    tabIndex?: any; // FIXME
+};
+
+export const Container = styled.div<HasTabIndexStyledSystemProps>`
     display: flex;
     justify-content: center;
     align-items: center;

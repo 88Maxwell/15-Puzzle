@@ -1,9 +1,13 @@
-export default (key, {
-    right,
-    left,
-    top,
-    bottom
-}) => {
+import { BoardCell } from "../components/Board";
+
+type ArrowsFunction = {
+    right: () => BoardCell[][];
+    left: () => BoardCell[][];
+    top: () => BoardCell[][];
+    bottom: () => BoardCell[][];
+};
+
+export default (key: number, { right, left, top, bottom }: ArrowsFunction) => {
     switch (key) {
         // ---- LEFT -------
         case 37:

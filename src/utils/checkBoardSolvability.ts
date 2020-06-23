@@ -1,31 +1,36 @@
-const getIndexOfMain = (matrix) => matrix.reduce((acc, row) => [ ...acc, ...row ], []).findIndex((el) => el.main);
+import { BoardCell } from "../components/Board";
 
-const fromMatrixToComputedArr = (matrix) => matrix.reduce((acc, row) => {
-    const computedRow = row.map((el) => el.x + el.y * matrix.length + 1);
+const getIndexOfMain = (board: BoardCell[][]) =>
+    board.reduce((acc, row) => [...acc, ...row], []).findIndex((el) => el.isMain);
 
-    return [ ...acc, ...computedRow ];
-}, []);
+const fromMatrixToComputedArr = (board: BoardCell[][]) =>
+    board.reduce((acc: number[], row) => {
+        const computedRow = row.map((el) => el.x + el.y * board.length + 1);
 
-const getInversionCount = (arr, N) => arr.reduce((acc, arrEl, index) => {
-    if (arrEl !== N ** 2) {
-        const slicedArr = arr.slice(index + 1);
+        return [...acc, ...computedRow];
+    }, []);
 
-        return (
-            acc
-                + slicedArr.reduce(
+const getInversionCount = (arr: number[], N: number) =>
+    arr.reduce((acc, arrEl, index) => {
+        if (arrEl !== N ** 2) {
+            const slicedArr = arr.slice(index + 1);
+
+            return (
+                acc +
+                slicedArr.reduce(
                     (accumulator, elem) => (arrEl < elem && arrEl !== 16 ? accumulator : accumulator + 1),
-                    0
+                    0,
                 )
-        );
-    }
+            );
+        }
 
-    return acc;
-}, 0);
+        return acc;
+    }, 0);
 
-const isEven = (number) => Math.floor(number / 2) === number / 2;
-const isOdd = (number) => !isEven(number);
+const isEven = (number: number) => Math.floor(number / 2) === number / 2;
+const isOdd = (number: number) => !isEven(number);
 
-export default function checkBoardSolvability(board) {
+export default function checkBoardSolvability(board: BoardCell[][]) {
     const N = board.length;
     const indexOfMain = getIndexOfMain(board);
     const computedArr = fromMatrixToComputedArr(board);
@@ -40,7 +45,6 @@ export default function checkBoardSolvability(board) {
 
     return conditionOne || (conditionTwo && (conditionTwoSubOne || conditionTwoSubTwo));
 }
-
 
 // const st = [
 //     [ { x: 0, y: 3 }, { x: 1, y: 0 }, { x: 1, y: 2 }, { x: 2, y: 0 } ],
