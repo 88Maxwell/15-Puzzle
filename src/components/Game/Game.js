@@ -5,8 +5,12 @@ import mapArrowKey from "../../utils/mapArrowKey";
 import Tile from "../Tile";
 import { Container, Btn, Nav } from "./styles";
 import {
-    genereteDefaultBoard, shuffleBoard, mixStatusToBoard, mapBoard
+    genereteDefaultBoard,
+    shuffleBoard,
+    mixStatusToBoard,
+    mapBoard
 } from "./Game.utils";
+
 
 const gameActionTypes = {
     BREAK_GAME : "BREAK_GAME",

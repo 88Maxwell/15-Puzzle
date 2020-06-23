@@ -23,9 +23,6 @@ export default styled.div`
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    transition-timing-function: ease;
-    transition-delay: 1s;
-    transition-property: all;
     width: 25%;
     height: 25%;
     border: 2.5px solid white;
