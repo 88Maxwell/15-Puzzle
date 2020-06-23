@@ -1,6 +1,6 @@
 {
     "name": "15-puzzle",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "private": false,
     "main": "/src/index.js",
     "repository": "https://github.com/88Maxwell/15-Puzzle",
