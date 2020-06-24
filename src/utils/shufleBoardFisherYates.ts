@@ -1,4 +1,4 @@
-import { BoardCell } from "../components/Board";
+import type { BoardCell } from "../components/Board";
 
 export default function shufleBoardFisherYates(board: BoardCell[][]) {
     // eslint-disable-next-line no-plusplus

@@ -1,4 +1,5 @@
 import BoardProvider from "./Board";
+
 export type {
     BoardAction,
     BoardCell,
@@ -6,7 +7,7 @@ export type {
     BoardActionType,
     BoardActionTypeConstants,
     BoardProviderProps,
-    BoardContextValue,
+    BoardContextValue
 } from "./Board";
 
 export { BoardContext, boardActionTypeConstants } from "./Board";

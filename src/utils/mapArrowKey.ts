@@ -7,7 +7,12 @@ type ArrowsFunction = {
     bottom: () => BoardCell[][];
 };
 
-export default (key: number, { right, left, top, bottom }: ArrowsFunction) => {
+export default (key: number, {
+    right,
+    left,
+    top,
+    bottom
+}: ArrowsFunction) => {
     switch (key) {
         // ---- LEFT -------
         case 37:
@@ -24,7 +29,7 @@ export default (key: number, { right, left, top, bottom }: ArrowsFunction) => {
         // ---- DOWN -------
         case 40:
             return bottom();
-            
+
         default:
             break;
     }

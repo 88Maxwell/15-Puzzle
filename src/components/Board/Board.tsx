@@ -6,7 +6,8 @@ export type BoardActionType = "BREAK_GAME" | "SET_STATE" | "INIT_GAME";
 export type BoardActionTypeConstants = { [key: string]: BoardActionType };
 export type BoardAction = {
     type: BoardActionType;
-    payload?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?: any; // TODO remove any
 };
 
 export type BoardProviderProps = {
@@ -37,22 +38,23 @@ export type BoardInitialState = {
 };
 
 export const boardActionTypeConstants: BoardActionTypeConstants = {
-    BREAK_GAME: "BREAK_GAME",
-    SET_STATE: "SET_STATE",
-    INIT_GAME: "INIT_GAME",
+    BREAK_GAME : "BREAK_GAME",
+    SET_STATE  : "SET_STATE",
+    INIT_GAME  : "INIT_GAME"
 };
 
 export const initialState = {
-    enabled: false,
-    board: getDefaultBoard(),
+    enabled : false,
+    board   : getDefaultBoard()
 };
 
 export const BoardContext = React.createContext<{
     state: BoardInitialState;
-    dispatch: React.Dispatch<any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dispatch: React.Dispatch<any>; // TODO remove any
 }>({
-    state: initialState,
-    dispatch: () => null,
+    state    : initialState,
+    dispatch : () => null
 });
 
 function boardReducer(state: BoardReducerState, action: BoardAction) {
@@ -61,13 +63,13 @@ function boardReducer(state: BoardReducerState, action: BoardAction) {
     switch (action.type) {
         case boardActionTypeConstants.INIT_GAME:
             return {
-                enabled: true,
-                board: getSolvableShuffledBoard(getDefaultBoard()),
+                enabled : true,
+                board   : getSolvableShuffledBoard(getDefaultBoard())
             };
         case boardActionTypeConstants.BREAK_GAME:
             return {
-                enabled: false,
-                board: getDefaultBoard(),
+                enabled : false,
+                board   : getDefaultBoard()
             };
         case boardActionTypeConstants.SET_STATE:
             return { enabled, board };
@@ -77,8 +79,8 @@ function boardReducer(state: BoardReducerState, action: BoardAction) {
 }
 
 function BoardProvider({ children }: BoardProviderProps) {
-    const [state, dispatch] = useReducer(boardReducer, initialState);
-    const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+    const [ state, dispatch ] = useReducer(boardReducer, initialState);
+    const contextValue = useMemo(() => ({ state, dispatch }), [ state, dispatch ]);
 
     return <BoardContext.Provider value={contextValue}>{children}</BoardContext.Provider>;
 }

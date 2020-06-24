@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../utils/theame";
-import { TileStatus } from "./Tile";
+import type { TileStatus } from "./Tile";
 
 const { Second, Right, Item } = colors;
 

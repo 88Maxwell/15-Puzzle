@@ -1,10 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Swipe as SwipeBase } from "react-swipe-component";
 
 type SwipeProps = {
     children: React.ReactNode;
-    onChangeGameState: (args: Pick<React.KeyboardEvent, "keyCode">) => any;
+    onChangeGameState: (args: Pick<React.KeyboardEvent, "keyCode">) => unknown;
 };
 
 function Swipe({ children, onChangeGameState }: SwipeProps) {
@@ -17,7 +16,6 @@ function Swipe({ children, onChangeGameState }: SwipeProps) {
         <SwipeBase
             nodeName="div"
             detectTouch
-            // onSwipeEnd={handleSwipeEnd} ???????????????
             onSwipedLeft={handleSwipeLeftListener}
             onSwipedRight={handleSwipeRightListener}
             onSwipedDown={handleSwipeDownListener}
@@ -27,10 +25,5 @@ function Swipe({ children, onChangeGameState }: SwipeProps) {
         </SwipeBase>
     );
 }
-
-Swipe.propTypes = {
-    children: PropTypes.node.isRequired,
-    onChangeGameState: PropTypes.func.isRequired,
-};
 
 export default Swipe;

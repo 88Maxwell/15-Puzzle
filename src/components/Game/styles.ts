@@ -22,6 +22,7 @@ export const Btn = styled.button`
 `;
 
 type HasTabIndexStyledSystemProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tabIndex?: any; // FIXME
 };
 

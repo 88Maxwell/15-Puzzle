@@ -5,14 +5,14 @@ import Board from "./components/Board";
 import Game from "./components/Game";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(
-    (<React.StrictMode>
+ReactDOM.render((
+    <React.StrictMode>
         <Board>
             <Game />
         </Board>
-    </React.StrictMode>),
-    document.getElementById("root"),
-);
+    </React.StrictMode>
+),
+document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

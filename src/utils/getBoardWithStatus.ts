@@ -1,5 +1,5 @@
 import mapBoard from "./mapBoard";
-import { BoardCell } from "../components/Board";
+import type { BoardCell } from "../components/Board";
 
 export default function getBoardWithStatus(board: BoardCell[][]) {
     return mapBoard(board, (item, y, x) => ({

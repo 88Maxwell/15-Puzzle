@@ -13,7 +13,8 @@ import {} from "styled-components";
 type Offset = 1 | 0 | -1;
 
 function Game() {
-    const containerRef: React.RefObject<any> = useRef(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const containerRef: React.RefObject<any> = useRef(null); // TODO  remove any
     const { state, dispatch } = useContext(BoardContext);
 
     const handleStartGame = () => {
@@ -27,13 +28,13 @@ function Game() {
     const swapArrayElem = (
         board: BoardCell[][],
         mainCell: Pick<BoardCell, "x" | "y">,
-        targetCell: Pick<BoardCell, "x" | "y">,
+        targetCell: Pick<BoardCell, "x" | "y">
     ) => {
         const newBoard = mapBoard(board, (item) => ({ ...item }));
 
-        [newBoard[mainCell.y][mainCell.x], newBoard[targetCell.y][targetCell.x]] = [
+        [ newBoard[mainCell.y][mainCell.x], newBoard[targetCell.y][targetCell.x] ] = [
             { ...newBoard[targetCell.y][targetCell.x] },
-            newBoard[mainCell.y][mainCell.x],
+            newBoard[mainCell.y][mainCell.x]
         ];
 
         return newBoard;
@@ -56,11 +57,10 @@ function Game() {
         if (!main) throw new Error("findMain error");
 
         const item: Pick<BoardCell, "x" | "y"> = {
-            x: main.x + offsetX,
-            y: main.y + offsetY,
+            x : main.x + offsetX,
+            y : main.y + offsetY
         };
-        console.log("main :>> ", main);
-        console.log("item :>> ", item);
+
         if (item.y < 4 && item.y > -1 && item.x < 4 && item.x > -1) {
             return swapArrayElem(state.board, main, item);
         }
@@ -68,13 +68,12 @@ function Game() {
         return state.board;
     };
 
-    const swapItems = (key: number): BoardCell[][] =>
-        mapArrowKey(key, {
-            top: () => swapHandler(0, -1),
-            bottom: () => swapHandler(0, 1),
-            right: () => swapHandler(1, 0),
-            left: () => swapHandler(-1, 0),
-        });
+    const swapItems = (key: number): BoardCell[][] => mapArrowKey(key, {
+        top    : () => swapHandler(0, -1),
+        bottom : () => swapHandler(0, 1),
+        right  : () => swapHandler(1, 0),
+        left   : () => swapHandler(-1, 0)
+    });
 
     const handleChangeGameState = (ev: Pick<React.KeyboardEvent, "keyCode">): void => {
         if (state.enabled && ev.keyCode <= 40 && ev.keyCode >= 37) {
@@ -82,8 +81,8 @@ function Game() {
             const isWin = board.flat(1).every((el) => el.isRight);
 
             dispatch({
-                type: boardActionTypeConstants.SET_STATE,
-                payload: { enabled: !isWin, board },
+                type    : boardActionTypeConstants.SET_STATE,
+                payload : { enabled: !isWin, board }
             });
 
             // eslint-disable-next-line no-alert
@@ -91,23 +90,20 @@ function Game() {
         }
     };
 
-    const generateItems = () =>
-        state.board.map((val: BoardCell[]) =>
-            val.map((item: BoardCell) => {
-                const number = item.x + item.y * 4 + 1;
+    const generateItems = () => state.board.map((val: BoardCell[]) => val.map((item: BoardCell) => {
+        const number = item.x + item.y * 4 + 1;
 
-                let tileStatus: TileStatus = "default";
+        let tileStatus: TileStatus = "default";
 
-                if (item.isMain) tileStatus = "main";
-                else if (item.isRight) tileStatus = "right";
+        if (item.isMain) tileStatus = "main";
+        else if (item.isRight) tileStatus = "right";
 
-                return (
-                    <Tile key={number} status={tileStatus}>
-                        {number}
-                    </Tile>
-                );
-            }),
+        return (
+            <Tile key={number} status={tileStatus}>
+                {number}
+            </Tile>
         );
+    }));
 
     return (
         <>

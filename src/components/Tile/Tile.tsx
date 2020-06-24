@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import React from "react";
 import Tile from "./styles";
 
@@ -7,6 +8,7 @@ type TileComponent = {
     children: React.ReactNode;
     status: TileStatus;
 };
+
 function TileComponent({ children, status }: TileComponent) {
     return <Tile status={status}>{children}</Tile>;
 }

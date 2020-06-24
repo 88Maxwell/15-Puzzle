@@ -1,31 +1,30 @@
-import { BoardCell } from "../components/Board";
+import type { BoardCell } from "../components/Board";
 
-const getIndexOfMain = (board: BoardCell[][]) =>
-    board.reduce((acc, row) => [...acc, ...row], []).findIndex((el) => el.isMain); // TODO move to board.flat(1).findIndex(...)
+const getIndexOfMain = (board: BoardCell[][]) => board
+    .reduce((acc, row) => [ ...acc, ...row ], [])
+    .findIndex((el) => el.isMain); // TODO move to board.flat(1).findIndex(...)
 
-const fromMatrixToComputedArr = (board: BoardCell[][]) =>
-    board.reduce((acc: number[], row) => {
-        const computedRow = row.map((el) => el.x + el.y * board.length + 1);
+const fromMatrixToComputedArr = (board: BoardCell[][]) => board.reduce((acc: number[], row) => {
+    const computedRow = row.map((el) => el.x + el.y * board.length + 1);
 
-        return [...acc, ...computedRow];
-    }, []);
+    return [ ...acc, ...computedRow ];
+}, []);
 
-const getInversionCount = (arr: number[], N: number) =>
-    arr.reduce((acc, arrEl, index) => {
-        if (arrEl !== N ** 2) {
-            const slicedArr = arr.slice(index + 1);
+const getInversionCount = (arr: number[], N: number) => arr.reduce((acc, arrEl, index) => {
+    if (arrEl !== N ** 2) {
+        const slicedArr = arr.slice(index + 1);
 
-            return (
-                acc +
-                slicedArr.reduce(
+        return (
+            acc
+                + slicedArr.reduce(
                     (accumulator, elem) => (arrEl < elem && arrEl !== 16 ? accumulator : accumulator + 1),
-                    0,
+                    0
                 )
-            );
-        }
+        );
+    }
 
-        return acc;
-    }, 0);
+    return acc;
+}, 0);
 
 const isEven = (number: number) => Math.floor(number / 2) === number / 2;
 const isOdd = (number: number) => !isEven(number);
