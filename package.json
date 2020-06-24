@@ -1,6 +1,6 @@
 {
     "name": "15-puzzle",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "private": false,
     "main": "/src/index.js",
     "license": "MIT",
@@ -48,7 +48,6 @@
         "@typescript-eslint/eslint-plugin": "^3.4.0",
         "@typescript-eslint/parser": "^3.4.0",
         "babel-eslint": "^10.1.0",
-        "eslint-config-airbnb": "^18.2.0",
         "eslint-config-airbnb-typescript": "^8.0.2",
         "eslint-config-frontend": "github:88Maxwell/eslint-config-frontend#4fdaeee74f46c9580e4858ce304bded4e97f913b",
         "eslint-config-prettier": "^6.11.0",
